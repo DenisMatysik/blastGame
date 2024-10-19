@@ -82,17 +82,38 @@ export function config() {
 				}
 			},
 		},
+		blastField: {
+			bg: {
+				x: 39,
+				y: 128,
+				key: "mainField",
+				origin: 0,
+				scale: {
+					x: 1.015,
+					y: 1
+				}
+			},
+			blocksName: [
+				"green",
+				"purple",
+				"red",
+				"yellow",
+				"blue"
+			],
+			block: {
+				x: 53,
+				y: 141,
+				width: 51,
+				heigth: 57,
+				origin: {
+					x: 0,
+					y: 0
+				}
+			}
+		},
 		// btnPause: {
 		// 	x: 929,
 		// 	y: 6
-		// },
-		// main: {
-		// 	x: 39,
-		// 	y: 128
-		// },
-		// buttons: {
-		// 	x: 53,
-		// 	y: 141
 		// },
 		// bonusesText: {
 		// 	x: 739,
