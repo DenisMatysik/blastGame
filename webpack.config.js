@@ -23,6 +23,14 @@ module.exports = {
                 test: /\.(png|jpe?g|gif|svg)$/i,
                 type: 'asset/resource', // Обработка изображений
             },
+            {
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"],
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/i,
+                type: 'asset/resource', // Обработка шрифтов как ресурсов
+            },
         ],
     },
     plugins: [

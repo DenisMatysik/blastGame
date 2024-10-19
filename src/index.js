@@ -1,3 +1,4 @@
+import './css/styles.css';
 import Phaser, {Scale} from 'phaser';
 import { Loader } from './js/scenes/Loader';
 import { MainWindow } from './js/scenes/MainWindow';
@@ -15,14 +16,6 @@ const config = {
         antialiasGL: false,
     },
     scene: [Loader, MainWindow]
-    // scene: {
-    //     preload() {
-    //         this.load.image('bg', 'assets/imgs/bg.png');
-    //     },
-    //     create() {
-    //         this.add.image(0, 0, 'bg');
-    //     },
-    // },
 };
 
 const game = new Phaser.Game(config);
