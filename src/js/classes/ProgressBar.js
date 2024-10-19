@@ -5,7 +5,7 @@ export class ProgressBar {
         this.scene = scene;
 
         this._createElements(config);
-        this.resetProgressFillBar();
+        // this.resetProgressFillBar();
     }
 
     /**

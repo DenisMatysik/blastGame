@@ -36,10 +36,52 @@ export function config() {
 				},
 			},
 		},
-		// scoreField: {
-		// 	x: 636,
-		// 	y: 160,
-		// },
+		scoreField: {
+			bg: {
+				x: 636,
+				y: 160,
+				key: "scoreField",
+				origin: 0
+			},
+			currentScore: {
+				x: 802,
+				y: 250,
+				text: "37",
+				style: {
+					fontSize: "70px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: {
+					x: 0.5,
+					y: 0.5
+				}
+			},
+			scoreDescription: {
+				x: 761,
+				y: 350,
+				text: "ОЧКИ:",
+				style: {
+					fontSize: "25px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+			},
+			allScore: {
+				x: 802,
+				y: 400,
+				text: "221",
+				style: {
+					fontSize: "40px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: {
+					x: 0.5,
+					y: 0.5
+				}
+			},
+		},
 		// btnPause: {
 		// 	x: 929,
 		// 	y: 6
