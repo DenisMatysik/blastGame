@@ -4,13 +4,32 @@ import { Block } from "./Block";
 export class BlastField {
     scene;
     config;
+    blastFieldCamera;
     arrBlocks = [];
 
     constructor(scene, config) {
         this.scene = scene;
         this.config = config;
 
+        this._createCamera(config.camera);
         this._createElements(config);
+    }
+
+    /**
+     * Метод создает камеру, в которой будут отображаться блоки поля "BlastField"
+     * @private
+     **/
+    _createCamera(config) {
+        this.blastFieldCamera = this.scene.cameras.add(
+            config.x,
+            config.y,
+            config.width,
+            config.heigth
+        );
+        this.blastFieldCamera.setScroll(
+            config.x,
+            config.y
+        );
     }
 
     /**

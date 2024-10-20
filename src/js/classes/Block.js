@@ -36,6 +36,7 @@ export class Block {
             origin: this.config.origin
         })
         .setInteractive({cursor: "pointer"});
+        this.scene.cameras.main.ignore(this.image);
     }
 
     /**

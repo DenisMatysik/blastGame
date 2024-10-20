@@ -118,6 +118,12 @@ export function config() {
 					fontFamily: "Marvin",
 					color: "#ffffff",
 				},
+			},
+			camera: {
+				x: 39,
+				y: 128 + 9,
+				width: 479,
+				heigth: 531,
 			}
 		},
 		// btnPause: {
