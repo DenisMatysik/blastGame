@@ -83,6 +83,8 @@ export function config() {
 			},
 		},
 		blastField: {
+			cols: 9,
+			rows: 10,
 			bg: {
 				x: 39,
 				y: 128,
@@ -101,14 +103,21 @@ export function config() {
 				"blue"
 			],
 			block: {
-				x: 53,
-				y: 141,
+				initialX: 53,
+				initialY: 141,
 				width: 51,
 				heigth: 57,
-				origin: {
-					x: 0,
-					y: 0
-				}
+				offsetY: 8,
+				origin: 0,
+				initialDepth: 90
+			},
+			text: {
+				text: "0",
+				style: {
+					fontSize: "15px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
 			}
 		},
 		// btnPause: {
