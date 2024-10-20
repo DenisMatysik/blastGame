@@ -14,7 +14,6 @@ export class Block {
         this.scene = scene;
         this.config = config;
         this.parent = parent;
-        this.config = config;
         this.rowIndex = rowIndex;
         this.colIndex = colIndex;
         this.color = config.key;

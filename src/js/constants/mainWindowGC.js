@@ -189,17 +189,53 @@ export function config() {
 				heigth: 531,
 			}
 		},
+		firstBonus: {
+			bg: {
+				x: 625,
+				y: 532,
+				key: "bonus",
+				origin: 0
+			},
+			text: {
+				x: 680,
+				y: 622,
+				text: "0",
+				style: {
+					fontSize: "20px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: {
+					x: 0.5,
+					y: 0.5
+				}
+			}
+		},
+		secondBonus: {
+			bg: {
+				x: 743,
+				y: 532,
+				key: "bonus",
+				origin: 0
+			},
+			text: {
+				x: 798,
+				y: 622,
+				text: "0",
+				style: {
+					fontSize: "20px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: {
+					x: 0.5,
+					y: 0.5
+				}
+			}
+		},
 		// btnPause: {
 		// 	x: 929,
 		// 	y: 6
-		// },
-		// bonusesText: {
-		// 	x: 739,
-		// 	y: 490
-		// },
-		// bonus: {
-		// 	x: 624,
-		// 	y: 532
 		// },
 		// btnRed: {
 		// 	x: 624,
@@ -208,14 +244,6 @@ export function config() {
 		// btnPurple: {
 		// 	x: 812,
 		// 	y: 667
-		// },
-		// redField: {
-		// 	x: 119,
-		// 	y: 17
-		// },
-		// purpleField: {
-		// 	x: 676,
-		// 	y: 17
 		// },
 		// btnPlus: {
 		// 	x: 837,

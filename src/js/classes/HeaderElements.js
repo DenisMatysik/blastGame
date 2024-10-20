@@ -3,14 +3,13 @@ export class HeaderElements {
 
     movesLeft;
     totalScore;
-    movesLeftValue = 0;
-    totalScoreValue = 0;
 
     constructor(scene, config) {
         this.scene = scene;
 
         this._createElements(config);
-        this.updateMovesLeft(25);
+        this.updateMovesLeft(this.scene.movesLeftValue);
+        this.updateTotalScore(this.scene.totalScoreValue);
     }
 
     /**
@@ -33,8 +32,8 @@ export class HeaderElements {
      * @param {number} value - значение, на сколько нужно увеличить общий счёт
      **/
     updateTotalScore(value) {
-        this.totalScoreValue += value;
-        this.totalScore.setText(this.totalScoreValue);
+        this.scene.totalScoreValue += value;
+        this.totalScore.setText(this.scene.totalScoreValue);
     }
 
     /**
@@ -44,8 +43,8 @@ export class HeaderElements {
      **/
     updateMovesLeft (value) {
         value 
-            ? this.movesLeftValue = value
-            : this.movesLeftValue -= 1;
-        this.movesLeft.setText(this.movesLeftValue);
+            ? this.scene.movesLeftValue = value
+            : this.scene.movesLeftValue -= 1;
+        this.movesLeft.setText(this.scene.movesLeftValue);
     }
 }
