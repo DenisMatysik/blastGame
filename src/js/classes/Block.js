@@ -1,4 +1,4 @@
-import { countColumns, dfs, randomIntBetween0And4, sortByColumnAndRow } from "../functions";
+import { countColumns, dfs, getWinValueByColor, randomIntBetween0And4, sortByColumnAndRow } from "../functions";
 
 export class Block {
     scene;
@@ -53,7 +53,11 @@ export class Block {
             sortByColumnAndRow(GROUP_EMPTY_ELEMENTS);
     
             if (GROUP_EMPTY_ELEMENTS.length >= 2) {
+                const WIN_VALUE = getWinValueByColor(this.color, GROUP_EMPTY_ELEMENTS.length);
                 const COUNT_ELEMENTS_COLUMN = countColumns(GROUP_EMPTY_ELEMENTS);
+                this.scene.progressBar.updateProgressFillBar(WIN_VALUE / this.scene.config.winningValue);
+                this.scene.scoreField.updateScoreField(WIN_VALUE);
+                this.scene.headerElements.updateMovesLeft();
                 // Изменение положения по Y связанных блоков и задаю случайный цвет блоку
                 GROUP_EMPTY_ELEMENTS.forEach(([row, column]) => {
                     const BLOCK = this.parent.arrBlocks[row][column];

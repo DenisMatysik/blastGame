@@ -41,3 +41,15 @@ export const countColumns = (arr) => {
 
     return COLUMN_COUNT;
 }
+
+export const getWinValueByColor = (color, count) => {
+    const valueByColor = {
+        "yellow": 1,
+        "purple": 2,
+        "blue": 3,
+        "green": 4,
+        "red": 5,
+    };
+
+    return count * valueByColor[color];
+}

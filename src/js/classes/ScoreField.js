@@ -1,4 +1,8 @@
 export class ScoreField {
+    scene;
+    currentScore;
+    allScore;
+
     allScoreValue = 0;
 
     constructor(scene, config) {

@@ -1,4 +1,5 @@
 import { BlastField } from "../classes/BlastField";
+import { HeaderElements } from "../classes/HeaderElements";
 import {ProgressBar} from "../classes/ProgressBar";
 import { ScoreField } from "../classes/ScoreField";
 import {config} from "../constants/mainWindowGC";
@@ -13,8 +14,8 @@ export class MainWindow extends Phaser.Scene {
 	create() {
 		this.config = config.call(this);
 		this.make.image(this.config.bg);
-		this.make.image(this.config.header);
 
+		this.headerElements = new HeaderElements(this, this.config.headerElements);
 		this.progressBar = new ProgressBar(this, this.config.progressBar);
 		this.scoreField = new ScoreField(this, this.config.scoreField);
 		this.blastField = new BlastField(this, this.config.blastField);

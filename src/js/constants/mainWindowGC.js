@@ -1,16 +1,79 @@
 export function config() {
 	return {
+		winningValue: 1000,
 		bg: {
 			x: 0,
 			y: 0,
 			key: "background",
 			origin: 0,
 		},
-		header: {
-			x: 84,
-			y: 0,
-			key: "header",
-			origin: 0,
+		headerElements: {
+			bg: {
+				x: 84,
+				y: 0,
+				key: "header",
+				origin: 0,
+			},
+			redField: {
+				x: 135,
+				y: 32,
+				key: "redField",
+				origin: 0,
+			},
+			redFieldText: {
+				x: 119,
+				y: 10,
+				text: "ОСТАЛОСЬ ХОДОВ",
+				style: {
+					fontSize: "15px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+			},
+			redFieldValue: {
+				x: 204,
+				y: 52,
+				text: "0",
+				style: {
+					fontSize: "30px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: {
+					x: 0.5,
+					y: 0.5
+				}
+			},
+			purpleField: {
+				x: 677,
+				y: 32,
+				key: "purpleField",
+				origin: 0,
+			},
+			purpleFieldText: {
+				x: 702,
+				y: 10,
+				text: "ОБЩИЙ СЧЁТ",
+				style: {
+					fontSize: "15px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+			},
+			purpleFieldValue: {
+				x: 773,
+				y: 52,
+				text: "0",
+				style: {
+					fontSize: "30px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: {
+					x: 0.5,
+					y: 0.5
+				}
+			},
 		},
 		progressBar: {
 			bg: {
@@ -46,7 +109,7 @@ export function config() {
 			currentScore: {
 				x: 802,
 				y: 250,
-				text: "37",
+				text: "0",
 				style: {
 					fontSize: "70px",
 					fontFamily: "Marvin",
@@ -70,7 +133,7 @@ export function config() {
 			allScore: {
 				x: 802,
 				y: 400,
-				text: "221",
+				text: "0",
 				style: {
 					fontSize: "40px",
 					fontFamily: "Marvin",
