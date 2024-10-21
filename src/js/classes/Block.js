@@ -37,6 +37,7 @@ export class Block {
         })
         .setInteractive({cursor: "pointer"});
         this.scene.cameras.main.ignore(this.image);
+        this.scene.modalPauseCamera.ignore(this.image);
     }
 
     /**

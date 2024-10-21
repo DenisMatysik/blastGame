@@ -12,6 +12,7 @@ export class Loader extends Phaser.Scene {
 		this.load.image("red", "assets/imgs/red.png");
 		this.load.image("yellow", "assets/imgs/yellow.png");
 		this.load.image("btnPause", "assets/imgs/btnPause.png");
+		this.load.image("btnClose", "assets/imgs/btnClose.png");
 		this.load.image("btnPlus", "assets/imgs/btnPlus.png");
 		this.load.image("btnPurple", "assets/imgs/btnPurple.png");
 		this.load.image("btnRed", "assets/imgs/btnRed.png");

@@ -1,4 +1,4 @@
-export class ButtonPause {
+export class ButtonClose {
     scene;
     config;
     image;
@@ -28,7 +28,7 @@ export class ButtonPause {
      **/
     _createEvents() {
         this.image.on("pointerup", () => {
-		    this.scene.modalPauseCamera.setVisible(true);
+		    this.scene.modalPauseCamera.setVisible(false);
         });
     }
 }

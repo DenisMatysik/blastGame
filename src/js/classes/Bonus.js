@@ -5,14 +5,16 @@ export class Bonus {
     image;
     bonusText;
     bonusValue = 0;
+    isBonusActive = false;
 
-    constructor(scene, config, bonusValue) {
+    constructor(scene, config, bonusValue, isBonusActive) {
         this.scene = scene;
         this.config = config;
         this.bonusValue = bonusValue;
+        this.isBonusActive = isBonusActive;
         this._createElements(config);
         this._createEvents();
-        this.activeDisableBtn(this.scene.totalScoreValue >= this.bonusValue);
+        this.activeDisableBtn(isBonusActive);
     }
 
     /**

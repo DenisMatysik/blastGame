@@ -233,12 +233,101 @@ export function config() {
 				}
 			}
 		},
+		thirdBonus: {
+			bg: {
+				x: 861,
+				y: 532,
+				key: "bonus",
+				origin: 0
+			},
+			text: {
+				x: 914,
+				y: 622,
+				text: "50",
+				style: {
+					fontSize: "20px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: {
+					x: 0.5,
+					y: 0.5
+				}
+			}
+		},
 		btnPause: {
 			x: 929,
 			y: 6,
 			key: "btnPause",
 			origin: 0,
 		},
+		modalPause: {
+			bg: {
+				x: 0,
+				y: 0,
+				key: "background",
+				origin: 0,
+				alpha: 0.85,
+			},
+			camera: {
+				x: 0,
+				y: 0,
+				width: 1024,
+				heigth: 768,
+			},
+			btnClose: {
+				x: 929,
+				y: 6,
+				key: "btnClose",
+				origin: 0,
+			},
+			frame: {
+				x: 512,
+				y: 128,
+				key: "mainField",
+				origin: {
+					x: 0.5,
+					y: 0
+				},
+				scale: {
+					x: 0.5,
+					y: 0.725
+				},
+			},
+			block: {
+				x: 450,
+				y: 150,
+				origin: 0,
+				offsetY: 70
+			},
+			text: {
+				x: 550,
+				y: 170,
+				offsetY: 70,
+				text: "",
+				style: {
+					fontSize: "45px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: 0.5
+			},
+			blockColors: ["yellow", "purple", "blue", "green", "red"],
+		},
+		bonusesDescription: {
+			x: 800,
+			y: 508,
+			text: "БОНУСЫ",
+			style: {
+				fontSize: "30px",
+				fontFamily: "Marvin",
+				color: "#ffffff",
+			},
+			origin: {
+				x: 0.5,
+				y: 0.5
+			}
+		}
 		// btnRed: {
 		// 	x: 624,
 		// 	y: 667
