@@ -7,7 +7,7 @@ export class ButtonPause {
         this.scene = scene;
         this.config = config;
 
-        this._createElements();
+        this._createElements(config);
         this._createEvents();
     }
 
