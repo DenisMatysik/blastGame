@@ -40,7 +40,7 @@ export class BlastField {
     }
 
     /**
-     * Метод запуска анимации полёта блоков вниз
+     * Метод для отключения/включения всех кнопок
      * @public
      * @param {boolean} state - true(разблокировать)/заблокировать
      **/
@@ -48,6 +48,16 @@ export class BlastField {
         this.arrBlocks.forEach(row => row.forEach(block => state
             ? block.image.setInteractive({cursor: "pointer"})
             : block.image.disableInteractive()
+        ));
+    }
+
+    /**
+     * Метод для задания случайного цвета всем блокам
+     * @public
+     **/
+    shuffleBlocksColor() {
+        this.arrBlocks.forEach(row => row.forEach(block => 
+            block.setRandomColor()
         ));
     }
 }

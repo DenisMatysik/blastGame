@@ -3,6 +3,7 @@ import { Bonus } from "../classes/Bonus";
 import { ButtonPause } from "../classes/ButtonPause";
 import { HeaderElements } from "../classes/HeaderElements";
 import { ModalPause } from "../classes/ModalPause";
+import { ModalWinLose } from "../classes/ModalWinLose";
 import {ProgressBar} from "../classes/ProgressBar";
 import { ScoreField } from "../classes/ScoreField";
 import {config} from "../constants/mainWindowGC";
@@ -11,18 +12,26 @@ export class MainWindow extends Phaser.Scene {
 	config;
 	blastFieldCamera;
 	modalPauseCamera;
+	modalWinLoseCamera;
 	headerElements;
 	progressBar;
 	scoreField;
 	blastField;
 	btnPause;
+	modalPause;
+	modalWinLose;
+	bonuses = [];
 	movesLeftValue = 50;
     remainingPoints = 1000;
-	bonuses = [];
 	activeBonuses = {
 		0: false,
 		1: false,
 		2: false,
+	};
+	counterBonuses = {
+		0: 5,
+		1: 0,
+		2: 0,
 	};
 	radiusBlast = 3;
 
@@ -48,23 +57,32 @@ export class MainWindow extends Phaser.Scene {
             this.config.blastField.camera.width,
             this.config.blastField.camera.heigth
         );
-        this.blastFieldCamera.setScroll(
-            this.config.blastField.camera.x,
-            this.config.blastField.camera.y
-        );
-		this.blastFieldCamera.name = "blastFieldCamera";
 		this.modalPauseCamera = this.cameras.add(
             this.config.modalPause.camera.x,
             this.config.modalPause.camera.y,
             this.config.modalPause.camera.width,
             this.config.modalPause.camera.heigth
         );
+		this.modalWinLoseCamera = this.cameras.add(
+            this.config.modalWinLose.camera.x,
+            this.config.modalWinLose.camera.y,
+            this.config.modalWinLose.camera.width,
+            this.config.modalWinLose.camera.heigth
+        );
+        this.blastFieldCamera.setScroll(
+            this.config.blastField.camera.x,
+            this.config.blastField.camera.y
+        );
         this.modalPauseCamera.setScroll(
             this.config.modalPause.camera.x,
             this.config.modalPause.camera.y
         );
-		this.modalPauseCamera.name = "modalPauseCamera";
+        this.modalWinLoseCamera.setScroll(
+            this.config.modalWinLose.camera.x,
+            this.config.modalWinLose.camera.y
+        );
 		this.modalPauseCamera.setVisible(false);
+		this.modalWinLoseCamera.setVisible(false);
     }
 
 	/**
@@ -78,11 +96,14 @@ export class MainWindow extends Phaser.Scene {
 		this.scoreField = new ScoreField(this, this.config.scoreField);
 		this.blastField = new BlastField(this, this.config.blastField);
         this.make.text(this.config.bonusesDescription);
-		this.bonuses.push(new Bonus(this, this.config.firstBonus, 5, "R", 0));
-		this.bonuses.push(new Bonus(this, this.config.secondBonus, 0, "T", 1));
-		this.bonuses.push(new Bonus(this, this.config.thirdBonus, 0, "?", 2));
+		this.bonuses = [
+			new Bonus(this, this.config.firstBonus, this.counterBonuses[0], "R", 0),
+			new Bonus(this, this.config.secondBonus, this.counterBonuses[1], "T", 1),
+			new Bonus(this, this.config.thirdBonus, this.counterBonuses[2], "?", 2)
+		];
 		this.btnPause = new ButtonPause(this, this.config.btnPause);
 		this.modalPause = new ModalPause(this, this.config.modalPause);
+		this.modalWinLose = new ModalWinLose(this, this.config.modalWinLose);
 	}
 
 	/**
@@ -96,5 +117,34 @@ export class MainWindow extends Phaser.Scene {
 			}
 		}
 		return false;
+	}
+
+	/**
+     * Метод который отобразит модальное окно с информацией о конце игры
+     * @public
+     **/
+	showModalWinLoseGame(state) {
+		this.modalWinLose.updateModal(state);
+		this.modalWinLoseCamera.setVisible(true);
+	}
+
+	/**
+     * Метод который сбросит всю игру в начало
+     * @public
+     **/
+	refreshGame() {
+		this.movesLeftValue = 50;
+    	this.remainingPoints = 1000;
+		this.activeBonuses = {
+			0: false,
+			1: false,
+			2: false,
+		};
+		this.headerElements.resetHeaderElements();
+		this.progressBar.resetProgressFillBar();
+		this.scoreField.resetScoreField();
+		this.blastField.shuffleBlocksColor();
+		this.bonuses.forEach((bonus, index) => bonus.resetBonus(this.counterBonuses[index]));
+		this.modalWinLoseCamera.setVisible(false);
 	}
 }

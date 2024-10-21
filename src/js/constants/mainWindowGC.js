@@ -437,7 +437,7 @@ export function config() {
 				y: 578,
 				offsetY: 70,
 				offsetX: 300,
-				text: "T - ПЕРЕМЕЩЕНИЕ",
+				text: "T,? - НЕ РАБОТАЕТ",
 				style: {
 					fontSize: "30px",
 					fontFamily: "Marvin",
@@ -459,6 +459,52 @@ export function config() {
 				x: 0.5,
 				y: 0.5
 			}
+		},
+		modalWinLose: {
+			bg: {
+				x: 0,
+				y: 0,
+				key: "background",
+				origin: 0,
+			},
+			camera: {
+				x: 0,
+				y: 0,
+				width: 1024,
+				heigth: 768,
+			},
+			text: {
+				x: 512,
+				y: 250,
+				text: "ВЫ ВЫИГРАЛИ",
+				alterText: "ВЫ ПРОИГРАЛИ",
+				style: {
+					fontSize: "100px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: 0.5
+			},
+			btnRefresh: {
+				image: {
+					x: 512,
+					y: 400,
+					key: "btnPurple",
+					origin: 0.5,
+					scale: 2
+				},
+				text: {
+					x: 512,
+					y: 400,
+					text: "ЗАНОВО",
+					style: {
+						fontSize: "45px",
+						fontFamily: "Marvin",
+						color: "#ffffff",
+					},
+					origin: 0.5
+				}
+			},
 		}
 		// btnRed: {
 		// 	x: 624,

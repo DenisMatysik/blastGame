@@ -48,4 +48,13 @@ export class HeaderElements {
             : this.scene.movesLeftValue -= 1;
         this.movesLeft.setText(this.scene.movesLeftValue);
     }
+
+    /**
+     * Метод сбросит все значения элементов header
+     * @public
+     **/
+    resetHeaderElements() {
+        this.movesLeft.setText(this.scene.movesLeftValue);
+        this.scoreRemaining.setText(this.scene.remainingPoints);
+    }
 }

@@ -30,6 +30,7 @@ export class ProgressBar {
     updateProgressFillBar(value) {
         this.fillValue += value;
 		this.fill.setCrop(0, 0, this.fill.width * this.fillValue, this.fill.height);
+        this.fillValue >= 1 && this.scene.showModalWinLoseGame(true);
 	}
 
     /**

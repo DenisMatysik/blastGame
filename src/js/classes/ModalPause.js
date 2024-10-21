@@ -13,9 +13,11 @@ export class ModalPause {
 
         this._createElements(config);
         this._createEvents();
+        // Отключаем отображение элементов в других камерах
         this.children.forEach(el => {
             this.scene.cameras.main.ignore(el);
             this.scene.blastFieldCamera.ignore(el);
+            this.scene.modalWinLoseCamera.ignore(el);
         });
     }
 

@@ -91,4 +91,16 @@ export class Bonus {
             this.scene.activeBonuses[this.bonusNumber] = false;
         } 
     }
+
+    /**
+     * Метод для сброса всех значений бонуса
+     * @public
+     * @param {boolean} value - количество бонусов после сброса
+     **/
+    resetBonus(value) {
+        this.bonusText.setText(value);
+        this.bonusCount = value;
+        this.showHideBonus(false);
+        this.activeDisableBtn(value > 0);
+    }
 }
