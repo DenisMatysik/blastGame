@@ -19,6 +19,7 @@ export class Loader extends Phaser.Scene {
 		this.load.image("progressBg", "assets/imgs/progressBg.png");
 		this.load.image("progressFill", "assets/imgs/progressFill.png");
 		this.load.image("bonus", "assets/imgs/bonus.png");
+		this.load.image("markerActiveBonus", "assets/imgs/markerActiveBonus.png");
 		this.load.image("mainField", "assets/imgs/mainField.png");
 		this.load.image("redField", "assets/imgs/redField.png");
 		this.load.image("purpleField", "assets/imgs/purpleField.png");

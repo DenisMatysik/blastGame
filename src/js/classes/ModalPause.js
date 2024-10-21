@@ -32,11 +32,15 @@ export class ModalPause {
         const frame = this.scene.make
             .image(config.frame)
             .setInteractive();
+        const markerActiveBonus = this.scene.make.image(config.markerActiveBonus);
+        const textActiveBonus = this.scene.make.text(config.textActiveBonus);
 
         this.children = [
             this.bg,
             btnClose.image,
             frame,
+            markerActiveBonus,
+            textActiveBonus
         ];
         config.blockColors.forEach((color, index) => {
             const block = this.scene.make.image({

@@ -3,18 +3,18 @@ export class Bonus {
     config;
 
     image;
+    marker;
     bonusText;
     bonusValue = 0;
     isBonusActive = false;
 
-    constructor(scene, config, bonusValue, isBonusActive) {
+    constructor(scene, config, bonusValue, showBonus) {
         this.scene = scene;
         this.config = config;
         this.bonusValue = bonusValue;
-        this.isBonusActive = isBonusActive;
         this._createElements(config);
         this._createEvents();
-        this.activeDisableBtn(isBonusActive);
+        this.activeDisableBtn(showBonus);
     }
 
     /**
@@ -29,6 +29,7 @@ export class Bonus {
             ...config.text,
             text: this.bonusValue
         });
+        this.marker = this.scene.make.image(config.marker);
     }
 
     /**
@@ -37,12 +38,10 @@ export class Bonus {
      **/
     _createEvents() {
         this.image.on("pointerup", () => {
-            this.isBonusActive = !this.isBonusActive;
-            this.showHideBonus(this.isBonusActive);
+            this.showHideBonus(!this.isBonusActive);
             this.scene.activeBonus[this.bonusValue] = this.isBonusActive;
 
             this.scene.bonuses.filter(bonus => bonus!== this).forEach(bonus => {
-                bonus.isBonusActive = false;
                 bonus.showHideBonus(false);
                 this.scene.activeBonus[bonus.bonusValue] = false;
             });
@@ -65,9 +64,8 @@ export class Bonus {
      * @public
      * @param {boolean} state - true(разблокировать)/заблокировать
      **/
-    showHideBonus() {
-        this.isBonusActive 
-            ? this.scene.input.enableDebug(this.image, 0xff00ff)
-            : this.scene.input.removeDebug(this.image);
+    showHideBonus(boolean) {
+        this.isBonusActive = boolean;
+        this.marker.setVisible(boolean);
     }
 }

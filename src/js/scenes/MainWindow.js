@@ -21,7 +21,8 @@ export class MainWindow extends Phaser.Scene {
 	bonuses = [];
 	activeBonus = {
 		5: false,
-		15: false
+		25: false,
+		50: false,
 	};
 
 	constructor() {

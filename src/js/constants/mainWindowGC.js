@@ -209,6 +209,14 @@ export function config() {
 					x: 0.5,
 					y: 0.5
 				}
+			},
+			marker: {
+				x: 697,
+				y: 613,
+				key: "markerActiveBonus",
+				origin: 0,
+				scale: 1,
+				visible: false
 			}
 		},
 		secondBonus: {
@@ -231,6 +239,14 @@ export function config() {
 					x: 0.5,
 					y: 0.5
 				}
+			},
+			marker: {
+				x: 815,
+				y: 613,
+				key: "markerActiveBonus",
+				origin: 0,
+				scale: 1,
+				visible: false
 			}
 		},
 		thirdBonus: {
@@ -253,6 +269,14 @@ export function config() {
 					x: 0.5,
 					y: 0.5
 				}
+			},
+			marker: {
+				x: 933,
+				y: 613,
+				key: "markerActiveBonus",
+				origin: 0,
+				scale: 1,
+				visible: false
 			}
 		},
 		btnPause: {
@@ -293,16 +317,17 @@ export function config() {
 					x: 0.5,
 					y: 0.725
 				},
+				scale: 1
 			},
 			block: {
-				x: 450,
-				y: 150,
+				x: 300,
+				y: 155,
 				origin: 0,
 				offsetY: 70
 			},
 			text: {
-				x: 550,
-				y: 170,
+				x: 400,
+				y: 178,
 				offsetY: 70,
 				text: "",
 				style: {
@@ -313,6 +338,23 @@ export function config() {
 				origin: 0.5
 			},
 			blockColors: ["yellow", "purple", "blue", "green", "red"],
+			markerActiveBonus: {
+				x: 300,
+				y: 535,
+				key: "markerActiveBonus",
+				origin: 0,
+				scale: 1,
+			},
+			textActiveBonus: {
+				x: 335,
+				y: 528,
+				text: "- БОНУС АКТИВИРОВАН",
+				style: {
+					fontSize: "30px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+			}
 		},
 		bonusesDescription: {
 			x: 800,
