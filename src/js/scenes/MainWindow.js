@@ -78,7 +78,7 @@ export class MainWindow extends Phaser.Scene {
 		this.blastField = new BlastField(this, this.config.blastField);
         this.make.text(this.config.bonusesDescription);
 		this.bonuses.push(new Bonus(this, this.config.firstBonus, 5, true));
-		this.bonuses.push(new Bonus(this, this.config.secondBonus, 25,true));
+		this.bonuses.push(new Bonus(this, this.config.secondBonus, 25,false));
 		this.bonuses.push(new Bonus(this, this.config.thirdBonus, 50, false));
 		this.btnPause = new ButtonPause(this, this.config.btnPause);
 		this.modalPause = new ModalPause(this, this.config.modalPause);

@@ -54,39 +54,48 @@ export class Block {
             sortByColumnAndRow(GROUP_EMPTY_ELEMENTS);
     
             if (GROUP_EMPTY_ELEMENTS.length >= 2) {
-                const WIN_VALUE = getWinValueByColor(this.color, GROUP_EMPTY_ELEMENTS.length);
-                const COUNT_ELEMENTS_COLUMN = countColumns(GROUP_EMPTY_ELEMENTS);
-                this.scene.progressBar.updateProgressFillBar(WIN_VALUE / this.scene.config.winningValue);
-                this.scene.scoreField.updateScoreField(WIN_VALUE);
-                this.scene.headerElements.updateMovesLeft();
-                // Изменение положения по Y связанных блоков и задаю случайный цвет блоку
-                GROUP_EMPTY_ELEMENTS.forEach(([row, column]) => {
-                    const BLOCK = this.parent.arrBlocks[row][column];
-                    BLOCK.image.setY(
-                        this.config.initialY - (COUNT_ELEMENTS_COLUMN[column]) * (this.config.heigth - this.config.offsetY));
-                    BLOCK.setRandomColor();
-                    COUNT_ELEMENTS_COLUMN[column]--;
-                });
-                this._moveElementsByColorUp(this.parent.arrBlocks, GROUP_EMPTY_ELEMENTS);
-                const ARR_CHANGED_COLUMNS = Object.keys(COUNT_ELEMENTS_COLUMN).map(Number)
-
-                this.parent.arrBlocks.forEach((row, rowIndex) => row.forEach((block, colIndex) => {
-                    block.rowIndex = rowIndex;
-                    // Добавил проверку, чтобы не смотреть колонки, в которых не будет изменене положения элементов
-                    if (ARR_CHANGED_COLUMNS.includes(colIndex)) {
-                        const CURRENT_Y = block.image.y;
-                        const UPDATED_Y = this.config.initialY + rowIndex * (this.config.heigth - this.config.offsetY);
-                        // Запускаю анимацию падения блоков
-                        if(CURRENT_Y !== UPDATED_Y) {
-                            block.image.setDepth(this.config.initialDepth - this.parent.config.rows * rowIndex + colIndex);
-                            block.startAnimationFallingBlock(block, UPDATED_Y);
-                        }
-                    }
-                }));
+                this._startLogicFallingBloks(GROUP_EMPTY_ELEMENTS);
             } else {
                 this.parent.activeDisableAllBlocks(true);
             }
         });
+    }
+
+    /**
+     * Метод для запуска логики просчёта положения элементов и последующего запуска анимации падения блоков
+     * @private
+     * @param {[number]} group - массив с позициями пустых ячеек
+     **/
+    _startLogicFallingBloks(group) {
+        const WIN_VALUE = getWinValueByColor(this.color, group.length);
+        const COUNT_ELEMENTS_COLUMN = countColumns(group);
+        this.scene.progressBar.updateProgressFillBar(WIN_VALUE / this.scene.config.winningValue);
+        this.scene.scoreField.updateScoreField(WIN_VALUE);
+        this.scene.headerElements.updateMovesLeft();
+        // Изменение положения по Y связанных блоков и задаю случайный цвет блоку
+        group.forEach(([row, column]) => {
+            const BLOCK = this.parent.arrBlocks[row][column];
+            BLOCK.image.setY(
+                this.config.initialY - (COUNT_ELEMENTS_COLUMN[column]) * (this.config.heigth - this.config.offsetY));
+            BLOCK.setRandomColor();
+            COUNT_ELEMENTS_COLUMN[column]--;
+        });
+        this._moveElementsByColorUp(this.parent.arrBlocks, group);
+        const ARR_CHANGED_COLUMNS = Object.keys(COUNT_ELEMENTS_COLUMN).map(Number)
+            
+        this.parent.arrBlocks.forEach((row, rowIndex) => row.forEach((block, colIndex) => {
+            block.rowIndex = rowIndex;
+            // Добавил проверку, чтобы не смотреть колонки, в которых не будет изменене положения элементов
+            if (ARR_CHANGED_COLUMNS.includes(colIndex)) {
+                const CURRENT_Y = block.image.y;
+                const UPDATED_Y = this.config.initialY + rowIndex * (this.config.heigth - this.config.offsetY);
+                // Запускаю анимацию падения блоков
+                if(CURRENT_Y !== UPDATED_Y) {
+                    block.image.setDepth(this.config.initialDepth - this.parent.config.rows * rowIndex + colIndex);
+                    block.startAnimationFallingBlock(block, UPDATED_Y);
+                }
+            }
+        }));
     }
 
     /**
