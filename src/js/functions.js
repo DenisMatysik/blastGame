@@ -19,6 +19,17 @@ export function dfs(row, col, value, visited, group, arrBlocks) {
     dfs(row, col + 1, value, visited, group, arrBlocks); // Вправо
 }
 
+// Поиск элементов, в определённом радиусе
+export const getElementsInTouchRadius = (row, col, allRows, allCols, radius, groupEmptyElements) => {
+    for (let i = Math.max(0, row - radius); i <= Math.min(allRows - 1, row + radius); i++) {
+        for (let j = Math.max(0, col - radius); j <= Math.min(allCols - 1, col + radius); j++) {
+            const DISTANCE = Math.sqrt((i - row) ** 2 + (j - col) ** 2);
+            DISTANCE <= radius && groupEmptyElements.push([i, j]);
+        }
+    }
+    return groupEmptyElements;
+}
+
 export const sortByColumnAndRow = (arr) => {
     return arr.sort((a, b) => {
         // Сравниваем по второму элементу (столбцу)
@@ -42,7 +53,7 @@ export const countColumns = (arr) => {
     return COLUMN_COUNT;
 }
 
-export const getWinValueByColor = (color, count) => {
+export const getWinValueByColor = (color, count, colorsWin = false) => {
     const valueByColor = {
         "yellow": 1,
         "purple": 2,
@@ -50,6 +61,15 @@ export const getWinValueByColor = (color, count) => {
         "green": 4,
         "red": 5,
     };
+
+    if (colorsWin) {
+        let win = 0;
+        for (const color in colorsWin) {
+            const COLOR_VALUE = valueByColor[color];
+            win += COLOR_VALUE * colorsWin[color];
+        };
+        return win
+    }
 
     return count * valueByColor[color];
 }

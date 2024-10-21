@@ -1,4 +1,4 @@
-import { countColumns, dfs, getWinValueByColor, randomIntBetween0And4, sortByColumnAndRow } from "../functions";
+import { countColumns, dfs, getElementsInTouchRadius, getWinValueByColor, randomIntBetween0And4, sortByColumnAndRow } from "../functions";
 
 export class Block {
     scene;
@@ -47,14 +47,34 @@ export class Block {
     _createEvents() {
         this.image.on("pointerup", () => {
             this.parent.activeDisableAllBlocks(false);
-            const VISITED = Array.from({ length: this.parent.config.rows }, () => Array(this.parent.config.cols).fill(false));
-            const GROUP_EMPTY_ELEMENTS = [];
-            dfs(this.rowIndex, this.colIndex, this.color, VISITED, GROUP_EMPTY_ELEMENTS, this.parent.arrBlocks);
-            // Сортирую массив, чтобы блоки правильно дальше занимали позиции после поднятия вверх
-            sortByColumnAndRow(GROUP_EMPTY_ELEMENTS);
+            const ACTIVE_BONUS = this.scene.getActiveBonus();
+            let groupEmptyElements = [];
+            switch(ACTIVE_BONUS) {
+                case '0':
+                    this.scene.bonuses[ACTIVE_BONUS].updateBonusCount();
+                    getElementsInTouchRadius(
+                        this.rowIndex, 
+                        this.colIndex, 
+                        this.parent.config.rows, 
+                        this.parent.config.cols,
+                        this.scene.radiusBlast,
+                        groupEmptyElements
+                    );
+                    break;
+                case '1': 
+                    break;
+                case '2':
+                    break;
+                default:
+                    const VISITED = Array.from({ length: this.parent.config.rows }, () => Array(this.parent.config.cols).fill(false));
+                    dfs(this.rowIndex, this.colIndex, this.color, VISITED, groupEmptyElements, this.parent.arrBlocks);
+                    break;
+            }
     
-            if (GROUP_EMPTY_ELEMENTS.length >= 2) {
-                this._startLogicFallingBloks(GROUP_EMPTY_ELEMENTS);
+            if (groupEmptyElements.length >= 2) {
+                // Сортирую массив, чтобы блоки правильно дальше занимали позиции после поднятия вверх
+                sortByColumnAndRow(groupEmptyElements);
+                this._startLogicFallingBloks(groupEmptyElements, ACTIVE_BONUS);
             } else {
                 this.parent.activeDisableAllBlocks(true);
             }
@@ -65,13 +85,32 @@ export class Block {
      * Метод для запуска логики просчёта положения элементов и последующего запуска анимации падения блоков
      * @private
      * @param {[number]} group - массив с позициями пустых ячеек
+     * @param {boolean} isActiveBonus - был ли активирован бонус
      **/
-    _startLogicFallingBloks(group) {
-        const WIN_VALUE = getWinValueByColor(this.color, group.length);
+    _startLogicFallingBloks(group, isActiveBonus) {
+        let winValue = 0;
+        if (isActiveBonus) {
+            const COUNTER_COLORS = {
+                "red": 0,
+                "yellow": 0,
+                "purple": 0,
+                "blue": 0,
+                "green": 0,
+            };
+            group.forEach(block => COUNTER_COLORS[this.parent.arrBlocks[block[0]][block[1]].color]++);
+            winValue = getWinValueByColor(false, false, COUNTER_COLORS);
+        } else {
+            winValue = getWinValueByColor(this.color, group.length);
+        }
+
         const COUNT_ELEMENTS_COLUMN = countColumns(group);
-        this.scene.progressBar.updateProgressFillBar(WIN_VALUE / this.scene.config.winningValue);
-        this.scene.scoreField.updateScoreField(WIN_VALUE);
+        this.scene.progressBar.updateProgressFillBar(winValue / this.scene.remainingPoints);
+        this.scene.scoreField.updateScoreField(winValue);
         this.scene.headerElements.updateMovesLeft();
+        this.scene.headerElements.updateRemainingPoints(
+            this.scene.remainingPoints - winValue
+        );
+
         // Изменение положения по Y связанных блоков и задаю случайный цвет блоку
         group.forEach(([row, column]) => {
             const BLOCK = this.parent.arrBlocks[row][column];

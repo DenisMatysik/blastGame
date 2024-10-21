@@ -5,29 +5,38 @@ export class Bonus {
     image;
     marker;
     bonusText;
-    bonusValue = 0;
+    bonusName;
+    bonusCount = 0;
+    bonusNumber = 0;
     isBonusActive = false;
 
-    constructor(scene, config, bonusValue, showBonus) {
+    constructor(scene, config, bonusCount, bonusName, bonusNumber) {
         this.scene = scene;
         this.config = config;
-        this.bonusValue = bonusValue;
-        this._createElements(config);
+        this.bonusCount = bonusCount;
+        this.bonusNumber = bonusNumber;
+        this._createElements(config, bonusName);
         this._createEvents();
-        this.activeDisableBtn(showBonus);
+        this.activeDisableBtn(bonusCount > 0);
     }
 
     /**
      * Метод создает элементы поля текущими очками за раунд
      * @private
+     * @param {{string}} config - конфиг с параметрами
+     * @param {string} bonusName - название бонуса
      **/
-    _createElements(config) {
+    _createElements(config, bonusName) {
 		this.image = this.scene.make
             .image(config.bg)
             .setInteractive({cursor: "pointer"});
         this.bonusText = this.scene.make.text({
             ...config.text,
-            text: this.bonusValue
+            text: this.bonusCount
+        });
+        this.bonusName = this.scene.make.text({
+            ...config.bonusName,
+            text: bonusName
         });
         this.marker = this.scene.make.image(config.marker);
     }
@@ -39,11 +48,11 @@ export class Bonus {
     _createEvents() {
         this.image.on("pointerup", () => {
             this.showHideBonus(!this.isBonusActive);
-            this.scene.activeBonus[this.bonusValue] = this.isBonusActive;
+            this.scene.activeBonuses[this.bonusNumber] = this.isBonusActive;
 
             this.scene.bonuses.filter(bonus => bonus!== this).forEach(bonus => {
                 bonus.showHideBonus(false);
-                this.scene.activeBonus[bonus.bonusValue] = false;
+                this.scene.activeBonuses[bonus.bonusNumber] = false;
             });
         });
     }
@@ -67,5 +76,19 @@ export class Bonus {
     showHideBonus(boolean) {
         this.isBonusActive = boolean;
         this.marker.setVisible(boolean);
+    }
+
+    /**
+     * Метод уменьшает количество бонусов на 1
+     * @public
+     **/
+    updateBonusCount() {
+        this.bonusCount--;
+        this.bonusText.setText(this.bonusCount);
+        if (this.bonusCount === 0) {
+            this.activeDisableBtn(false);
+            this.showHideBonus(false);
+            this.scene.activeBonuses[this.bonusNumber] = false;
+        } 
     }
 }

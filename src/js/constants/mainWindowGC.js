@@ -51,9 +51,9 @@ export function config() {
 				origin: 0,
 			},
 			purpleFieldText: {
-				x: 702,
+				x: 722,
 				y: 10,
-				text: "ОБЩИЙ СЧЁТ",
+				text: "ОСТАЛОСЬ",
 				style: {
 					fontSize: "15px",
 					fontFamily: "Marvin",
@@ -63,7 +63,7 @@ export function config() {
 			purpleFieldValue: {
 				x: 773,
 				y: 52,
-				text: "0",
+				text: "",
 				style: {
 					fontSize: "30px",
 					fontFamily: "Marvin",
@@ -199,9 +199,21 @@ export function config() {
 			text: {
 				x: 680,
 				y: 622,
-				text: "0",
 				style: {
 					fontSize: "20px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: {
+					x: 0.5,
+					y: 0.5
+				}
+			},
+			bonusName: {
+				x: 690,
+				y: 575,
+				style: {
+					fontSize: "40px",
 					fontFamily: "Marvin",
 					color: "#ffffff",
 				},
@@ -229,9 +241,21 @@ export function config() {
 			text: {
 				x: 798,
 				y: 622,
-				text: "0",
 				style: {
 					fontSize: "20px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: {
+					x: 0.5,
+					y: 0.5
+				}
+			},
+			bonusName: {
+				x: 808,
+				y: 575,
+				style: {
+					fontSize: "40px",
 					fontFamily: "Marvin",
 					color: "#ffffff",
 				},
@@ -259,9 +283,21 @@ export function config() {
 			text: {
 				x: 914,
 				y: 622,
-				text: "50",
 				style: {
 					fontSize: "20px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: {
+					x: 0.5,
+					y: 0.5
+				}
+			},
+			bonusName: {
+				x: 924,
+				y: 575,
+				style: {
+					fontSize: "40px",
 					fontFamily: "Marvin",
 					color: "#ffffff",
 				},
@@ -319,16 +355,31 @@ export function config() {
 				},
 				scale: 1
 			},
+			scoreText: {
+				x: 450,
+				y: 140,
+				offsetY: 70,
+				offsetX: 300,
+				text: "ОЧКИ",
+				style: {
+					fontSize: "45px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: 0
+			},
 			block: {
 				x: 300,
-				y: 155,
+				y: 205,
 				origin: 0,
-				offsetY: 70
+				offsetY: 70,
+				offsetX: 300,
 			},
 			text: {
-				x: 400,
-				y: 178,
+				x: 395,
+				y: 228,
 				offsetY: 70,
+				offsetX: 300,
 				text: "",
 				style: {
 					fontSize: "45px",
@@ -338,23 +389,62 @@ export function config() {
 				origin: 0.5
 			},
 			blockColors: ["yellow", "purple", "blue", "green", "red"],
+			bonusesText: {
+				x: 420,
+				y: 405,
+				offsetY: 70,
+				offsetX: 300,
+				text: "БОНУСЫ",
+				style: {
+					fontSize: "45px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: 0
+			},
 			markerActiveBonus: {
 				x: 300,
-				y: 535,
+				y: 385 + 100,
 				key: "markerActiveBonus",
 				origin: 0,
 				scale: 1,
 			},
 			textActiveBonus: {
 				x: 335,
-				y: 528,
+				y: 378 + 100,
 				text: "- БОНУС АКТИВИРОВАН",
 				style: {
 					fontSize: "30px",
 					fontFamily: "Marvin",
 					color: "#ffffff",
 				},
-			}
+			},
+			bonusRadiusText: {
+				x: 300,
+				y: 478 + 50,
+				offsetY: 70,
+				offsetX: 300,
+				text: "R - ВЗРЫВ РАДИУСОМ",
+				style: {
+					fontSize: "30px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: 0
+			},
+			bonusTeleportText: {
+				x: 300,
+				y: 578,
+				offsetY: 70,
+				offsetX: 300,
+				text: "T - ПЕРЕМЕЩЕНИЕ",
+				style: {
+					fontSize: "30px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+				origin: 0
+			},
 		},
 		bonusesDescription: {
 			x: 800,

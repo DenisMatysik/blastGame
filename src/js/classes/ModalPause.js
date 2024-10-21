@@ -32,25 +32,40 @@ export class ModalPause {
         const frame = this.scene.make
             .image(config.frame)
             .setInteractive();
+        const bonusesText = this.scene.make.text(config.bonusesText);
         const markerActiveBonus = this.scene.make.image(config.markerActiveBonus);
         const textActiveBonus = this.scene.make.text(config.textActiveBonus);
+        const bonusRadiusText = this.scene.make.text({
+            ...config.bonusRadiusText,
+            text: `${config.bonusRadiusText.text} ${this.scene.radiusBlast}`
+        });
+        const bonusTeleportText = this.scene.make.text(config.bonusTeleportText);
+        const scoreText = this.scene.make.text(config.scoreText);
+
 
         this.children = [
             this.bg,
             btnClose.image,
             frame,
+            scoreText,
+            bonusesText,
             markerActiveBonus,
-            textActiveBonus
+            textActiveBonus,
+            bonusRadiusText,
+            bonusTeleportText
         ];
         config.blockColors.forEach((color, index) => {
+            const ROW = Math.floor(index / 2);
             const block = this.scene.make.image({
                 ...config.block,
-                y: config.block.y + index * config.block.offsetY,
+                x: config.block.x + (index % 2) * config.block.offsetX,
+                y: config.block.y + ROW * config.block.offsetY,
                 key: color
             });
             const text = this.scene.make.text({
                 ...config.text,
-                y: config.text.y + index * config.text.offsetY,
+                x: config.text.x + (index % 2) * config.text.offsetX,
+                y: config.text.y + ROW * config.text.offsetY,
                 text: `- ${getWinValueByColor(color, 1)}`
             });
             this.children.push(block);

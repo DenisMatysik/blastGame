@@ -2,14 +2,14 @@ export class HeaderElements {
     scene;
 
     movesLeft;
-    totalScore;
+    scoreRemaining;
 
     constructor(scene, config) {
         this.scene = scene;
 
         this._createElements(config);
         this.updateMovesLeft(this.scene.movesLeftValue);
-        this.updateTotalScore(this.scene.totalScoreValue);
+        this.updateRemainingPoints(this.scene.remainingPoints);
     }
 
     /**
@@ -24,17 +24,17 @@ export class HeaderElements {
         this.scene.make.text(config.redFieldText);
         this.scene.make.text(config.purpleFieldText);
         this.movesLeft = this.scene.make.text(config.redFieldValue);
-        this.totalScore = this.scene.make.text(config.purpleFieldValue);
+        this.scoreRemaining = this.scene.make.text(config.purpleFieldValue);
     }
 
     /**
-     * Метод обновляет значение общего счёта
+     * Метод обновляет значение оставихся очков
      * @public
-     * @param {number} value - значение, на сколько нужно увеличить общий счёт
+     * @param {number} value - новое значение поля "Осталось"
      **/
-    updateTotalScore(value) {
-        this.scene.totalScoreValue += value;
-        this.totalScore.setText(this.scene.totalScoreValue);
+    updateRemainingPoints(value) {
+        this.scene.remainingPoints = value;
+        this.scoreRemaining.setText(this.scene.remainingPoints);
     }
 
     /**

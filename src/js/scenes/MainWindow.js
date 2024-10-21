@@ -16,14 +16,15 @@ export class MainWindow extends Phaser.Scene {
 	scoreField;
 	blastField;
 	btnPause;
-	movesLeftValue = 25;
-    totalScoreValue = 100;
+	movesLeftValue = 50;
+    remainingPoints = 1000;
 	bonuses = [];
-	activeBonus = {
-		5: false,
-		25: false,
-		50: false,
+	activeBonuses = {
+		0: false,
+		1: false,
+		2: false,
 	};
+	radiusBlast = 3;
 
 	constructor() {
 		super("MainWindow");
@@ -77,10 +78,23 @@ export class MainWindow extends Phaser.Scene {
 		this.scoreField = new ScoreField(this, this.config.scoreField);
 		this.blastField = new BlastField(this, this.config.blastField);
         this.make.text(this.config.bonusesDescription);
-		this.bonuses.push(new Bonus(this, this.config.firstBonus, 5, true));
-		this.bonuses.push(new Bonus(this, this.config.secondBonus, 25,false));
-		this.bonuses.push(new Bonus(this, this.config.thirdBonus, 50, false));
+		this.bonuses.push(new Bonus(this, this.config.firstBonus, 5, "R", 0));
+		this.bonuses.push(new Bonus(this, this.config.secondBonus, 0, "T", 1));
+		this.bonuses.push(new Bonus(this, this.config.thirdBonus, 0, "?", 2));
 		this.btnPause = new ButtonPause(this, this.config.btnPause);
 		this.modalPause = new ModalPause(this, this.config.modalPause);
+	}
+
+	/**
+     * Метод который вернёт значение выбранного бонуса
+     * @public
+     **/
+	getActiveBonus() {
+		for (const key in this.activeBonuses) {
+			if (this.activeBonuses[key] === true) {
+				return key;
+			}
+		}
+		return false;
 	}
 }
