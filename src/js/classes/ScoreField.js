@@ -14,6 +14,7 @@ export class ScoreField {
     /**
      * Метод создает элементы поля текущими очками за раунд
      * @private
+     * @param {{string}} config - конфиг с параметрами
      **/
     _createElements(config) {
         this.scene.make.image(config.bg);

@@ -18,21 +18,22 @@ export class Block {
         this.colIndex = colIndex;
         this.color = config.key;
 
-        this._createElements();
+        this._createElements(config);
         this._createEvents();
     }
 
     /**
      * Метод создает элементы поля текущими очками за раунд
      * @private
+     * @param {{string}} config - конфиг с параметрами
      **/
-    _createElements() {
+    _createElements(config) {
         this.image = this.scene.make.image({
-            x: this.config.x,
-            y: this.config.y,
-            key: this.config.key,
-            depth: this.config.depth,
-            origin: this.config.origin
+            x: config.x,
+            y: config.y,
+            key: config.key,
+            depth: config.depth,
+            origin: config.origin
         })
         .setInteractive({cursor: "pointer"});
         this.scene.cameras.main.ignore(this.image);

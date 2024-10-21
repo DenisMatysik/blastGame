@@ -18,6 +18,7 @@ export class BlastField {
     /**
      * Метод создает камеру, в которой будут отображаться блоки поля "BlastField"
      * @private
+     * @param {{string}} config - конфиг с параметрами
      **/
     _createCamera(config) {
         this.blastFieldCamera = this.scene.cameras.add(
@@ -35,6 +36,7 @@ export class BlastField {
     /**
      * Метод создает элементы поля "BlastField"
      * @private
+     * @param {{string}} config - конфиг с параметрами
      **/
     _createElements(config) {
         this.scene.make.image(config.bg);

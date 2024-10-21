@@ -233,10 +233,12 @@ export function config() {
 				}
 			}
 		},
-		// btnPause: {
-		// 	x: 929,
-		// 	y: 6
-		// },
+		btnPause: {
+			x: 929,
+			y: 6,
+			key: "btnPause",
+			origin: 0,
+		},
 		// btnRed: {
 		// 	x: 624,
 		// 	y: 667

@@ -14,6 +14,7 @@ export class ProgressBar {
     /**
      * Метод создает элементы поля "Прогресс"
      * @private
+     * @param {{string}} config - конфиг с параметрами
      **/
     _createElements(config) {
         this.scene.make.image(config.bg);

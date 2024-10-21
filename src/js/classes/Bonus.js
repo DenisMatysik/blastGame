@@ -10,7 +10,7 @@ export class Bonus {
         this.scene = scene;
         this.config = config;
         this.bonusValue = bonusValue;
-        this._createElements();
+        this._createElements(config);
         this._createEvents();
         this.activeDisableBtn(this.scene.totalScoreValue >= this.bonusValue);
     }
@@ -19,12 +19,12 @@ export class Bonus {
      * Метод создает элементы поля текущими очками за раунд
      * @private
      **/
-    _createElements() {
+    _createElements(config) {
 		this.image = this.scene.make
-            .image(this.config.bg)
+            .image(config.bg)
             .setInteractive({cursor: "pointer"});
         this.bonusText = this.scene.make.text({
-            ...this.config.text,
+            ...config.text,
             text: this.bonusValue
         });
     }

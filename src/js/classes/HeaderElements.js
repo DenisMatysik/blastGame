@@ -15,6 +15,7 @@ export class HeaderElements {
     /**
      * Метод создает элементы для шапки приложения
      * @private
+     * @param {{string}} config - конфиг с параметрами
      **/
     _createElements(config) {
         this.scene.make.image(config.bg);
