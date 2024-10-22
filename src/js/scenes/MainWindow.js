@@ -165,7 +165,7 @@ export class MainWindow extends Phaser.Scene {
 		} else if (this.movesLeftValue < 1) {
 			this.showModalWinLoseGame(false);
 		} else {
-			if (checkForAdjacentColorPairs(this.blastField.arrBlocks)) {
+			if (!checkForAdjacentColorPairs(this.blastField.arrBlocks)) {
 				if (this.countMixingColors === 0) {
 					this.showModalWinLoseGame(false);
 				}
