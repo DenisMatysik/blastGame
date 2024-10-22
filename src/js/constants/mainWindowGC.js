@@ -191,7 +191,8 @@ export function config() {
 			coppyBlock: {
 				x: 512,
 				y: -57,
-				depth: 90
+				depth: 90,
+				origin: 0
 			}
 		},
 		firstBonus: {

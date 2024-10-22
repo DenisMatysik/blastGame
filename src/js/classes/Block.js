@@ -223,7 +223,7 @@ export class Block {
                     y: ORIGINAL.y,
                     key: ORIGINAL.texture.key,
                     depth: CONFIG.depth + ORIGINAL.depth,
-                    origin: ORIGINAL.origin
+                    origin: CONFIG.origin
                 }, 
             );
             COPPY.startAnimationMovingBlock(CONFIG.x, CONFIG.y);
