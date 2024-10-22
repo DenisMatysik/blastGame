@@ -73,3 +73,20 @@ export const getWinValueByColor = (color, count, colorsWin = false) => {
 
     return count * valueByColor[color];
 }
+
+// Поиск хотябы одной пары соседних цветов
+export function checkForAdjacentColorPairs (matrix) {
+    for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[i].length; j++) {
+            // Проверка по горизонтали
+            if (j < matrix[i].length - 1 && matrix[i][j].color === matrix[i][j + 1].color) {
+                return true; // Найдена пара по цвету
+            }
+            // Проверка по вертикали
+            if (i < matrix.length - 1 && matrix[i][j].color === matrix[i + 1][j].color) {
+                return true; // Найдена пара по цвету
+            }
+        }
+    }
+    return false; // Пары не найдены
+}
