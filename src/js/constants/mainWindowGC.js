@@ -550,17 +550,5 @@ export function config() {
 				},
 			}
 		}
-		// btnRed: {
-		// 	x: 624,
-		// 	y: 667
-		// },
-		// btnPurple: {
-		// 	x: 812,
-		// 	y: 667
-		// },
-		// btnPlus: {
-		// 	x: 837,
-		// 	y: 24
-		// }
 	};
 }
