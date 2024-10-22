@@ -105,7 +105,7 @@ export class Block {
         }
 
         const COUNT_ELEMENTS_COLUMN = countColumns(group);
-        this.scene.progressBar.updateProgressFillBar(winValue / this.scene.remainingPoints);
+        this.scene.progressBar.updateProgressFillBar(winValue);
         this.scene.scoreField.updateScoreField(winValue);
         this.scene.headerElements.updateMovesLeft();
         this.scene.headerElements.updateRemainingPoints(
@@ -194,8 +194,10 @@ export class Block {
             duration: 500,
             ease: 'Linear',
             onComplete: (tween) => {
-                !this.parent.arrBlocks[0][0].image.input.enabled 
-                    && this.parent.activeDisableAllBlocks(true);
+                if (!this.parent.arrBlocks[0][0].image.input.enabled) {
+                    this.parent.activeDisableAllBlocks(true);
+                    this.scene.checkGameState();
+                }
                 tween.destroy();
             }
         });

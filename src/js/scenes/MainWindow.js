@@ -92,7 +92,7 @@ export class MainWindow extends Phaser.Scene {
     _createElements() {
 		this.make.image(this.config.bg);
 		this.headerElements = new HeaderElements(this, this.config.headerElements);
-		this.progressBar = new ProgressBar(this, this.config.progressBar);
+		this.progressBar = new ProgressBar(this, this.config.progressBar, this.remainingPoints);
 		this.scoreField = new ScoreField(this, this.config.scoreField);
 		this.blastField = new BlastField(this, this.config.blastField);
         this.make.text(this.config.bonusesDescription);
@@ -146,5 +146,17 @@ export class MainWindow extends Phaser.Scene {
 		this.blastField.shuffleBlocksColor();
 		this.bonuses.forEach((bonus, index) => bonus.resetBonus(this.counterBonuses[index]));
 		this.modalWinLoseCamera.setVisible(false);
+	}
+
+	/**
+     * Проверка игры на проигрыш
+     * @public
+     **/
+	checkGameState() {
+		if (this.progressBar.fillValue >= 1) {
+			this.showModalWinLoseGame(true);
+		} else if (this.movesLeftValue < 1) {
+			this.showModalWinLoseGame(false);
+		} 
 	}
 }

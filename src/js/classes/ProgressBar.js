@@ -3,9 +3,11 @@ export class ProgressBar {
     
     fill;
     fillValue = 0;
+    allPoints = 0;
 
-    constructor(scene, config) {
+    constructor(scene, config, allPoints) {
         this.scene = scene;
+        this.allPoints = allPoints;
 
         this._createElements(config);
         this.resetProgressFillBar();
@@ -28,9 +30,9 @@ export class ProgressBar {
      * @param {number} value - значение от 0-1, где 1 - 100% видимость элемента
      **/
     updateProgressFillBar(value) {
-        this.fillValue += value;
+        const CURRENT_FILL_VALUE = value / this.allPoints;
+        this.fillValue = parseFloat((this.fillValue + CURRENT_FILL_VALUE).toFixed(3));
 		this.fill.setCrop(0, 0, this.fill.width * this.fillValue, this.fill.height);
-        this.fillValue >= 1 && this.scene.showModalWinLoseGame(true);
 	}
 
     /**
