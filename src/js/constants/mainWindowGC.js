@@ -187,6 +187,11 @@ export function config() {
 				y: 128 + 9,
 				width: 479,
 				heigth: 531,
+			},
+			coppyBlock: {
+				x: 512,
+				y: -57,
+				depth: 90
 			}
 		},
 		firstBonus: {

@@ -1,4 +1,5 @@
 import { countColumns, dfs, getElementsInTouchRadius, getWinValueByColor, randomIntBetween0And4, sortByColumnAndRow } from "../functions";
+import { MovedImage } from "./MovedImage";
 
 export class Block {
     scene;
@@ -75,6 +76,7 @@ export class Block {
             if (groupEmptyElements.length >= 2) {
                 // Сортирую массив, чтобы блоки правильно дальше занимали позиции после поднятия вверх
                 sortByColumnAndRow(groupEmptyElements);
+                this._startAnimationMovingUpBlocks(groupEmptyElements);
                 this._startLogicFallingBloks(groupEmptyElements, ACTIVE_BONUS);
             } else {
                 this.parent.activeDisableAllBlocks(true);
@@ -186,6 +188,8 @@ export class Block {
     /**
      * Метод который запустит анимацию падения элемента
      * @public
+     * @param {[Phaser.GameObjects]} block - блок
+     * @param {number} y - координата на которую должен подняться блок
      **/
     startAnimationFallingBlock(block, y) {
         this.scene.tweens.add({
@@ -200,6 +204,29 @@ export class Block {
                 }
                 tween.destroy();
             }
+        });
+    }
+
+    /**
+     * Метод который создаст копии блоков поверх текущих и запустит анимацию полёта вверх
+     * @private
+     * @param {[number]} group - массив с позициями элементов, котороые пропадут
+     **/
+    _startAnimationMovingUpBlocks(arr) {
+        const CONFIG = this.parent.config.coppyBlock;
+        arr.forEach(block => {
+            const ORIGINAL = this.parent.arrBlocks[block[0]][block[1]].image;
+            const COPPY = new MovedImage(
+                this.scene, 
+                {
+                    x: ORIGINAL.x,
+                    y: ORIGINAL.y,
+                    key: ORIGINAL.texture.key,
+                    depth: CONFIG.depth + ORIGINAL.depth,
+                    origin: ORIGINAL.origin
+                }, 
+            );
+            COPPY.startAnimationMovingBlock(CONFIG.x, CONFIG.y);
         });
     }
 }
