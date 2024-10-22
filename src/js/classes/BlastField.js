@@ -1,4 +1,4 @@
-import { randomIntBetween0And4 } from "../functions";
+import { checkForAdjacentColorPairs, randomIntBetween0And4 } from "../functions";
 import { Block } from "./Block";
 
 export class BlastField {
@@ -54,10 +54,13 @@ export class BlastField {
     /**
      * Метод для задания случайного цвета всем блокам
      * @public
+     * @param {boolean} isBtnClick - был ли клик по кнпоке перемешать
      **/
-    shuffleBlocksColor() {
+    mixingBlocksColor(isBtnClick = false) {
         this.arrBlocks.forEach(row => row.forEach(block => 
             block.setRandomColor()
         ));
+        // Если после перемешиваний нет вариантов, то выводим окно с проигрышем
+        isBtnClick && !checkForAdjacentColorPairs(this.arrBlocks) && setTimeout(()=>this.scene.showModalWinLoseGame(false), 1000);
     }
 }

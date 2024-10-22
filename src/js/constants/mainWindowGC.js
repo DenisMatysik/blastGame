@@ -505,6 +505,44 @@ export function config() {
 					origin: 0.5
 				}
 			},
+		},
+		mixingColorsFrame: {
+			text: {
+				x: 40,
+				y: 685,
+				text: "ОСТАЛОСЬ ПЕРЕМЕШИВАНИЙ: ",
+				style: {
+					fontSize: "30px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+			},
+			textValue: {
+				x: 520,
+				y: 685,
+				text: "1",
+				style: {
+					fontSize: "30px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+			},
+			btn: {
+				x: 692,
+				y: 685,
+				key: "btnPlus",
+				origin: 0
+			},
+			description: {
+				x: 742,
+				y: 685,
+				text: "- ПЕРЕМЕШАТЬ",
+				style: {
+					fontSize: "30px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				},
+			}
 		}
 		// btnRed: {
 		// 	x: 624,

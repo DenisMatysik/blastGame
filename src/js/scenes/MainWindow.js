@@ -2,11 +2,13 @@ import { BlastField } from "../classes/BlastField";
 import { Bonus } from "../classes/Bonus";
 import { ButtonPause } from "../classes/ButtonPause";
 import { HeaderElements } from "../classes/HeaderElements";
+import { MixingColorsFrame } from "../classes/MixingColorsFrame";
 import { ModalPause } from "../classes/ModalPause";
 import { ModalWinLose } from "../classes/ModalWinLose";
 import {ProgressBar} from "../classes/ProgressBar";
 import { ScoreField } from "../classes/ScoreField";
 import {config} from "../constants/mainWindowGC";
+import { checkForAdjacentColorPairs } from "../functions";
 
 export class MainWindow extends Phaser.Scene {
 	config;
@@ -18,6 +20,7 @@ export class MainWindow extends Phaser.Scene {
 	scoreField;
 	blastField;
 	btnPause;
+	mixingColorsFrame;
 	modalPause;
 	modalWinLose;
 	bonuses = [];
@@ -34,6 +37,7 @@ export class MainWindow extends Phaser.Scene {
 		2: 0,
 	};
 	radiusBlast = 3;
+	countMixingColors = 2;
 
 	constructor() {
 		super("MainWindow");
@@ -101,6 +105,7 @@ export class MainWindow extends Phaser.Scene {
 			new Bonus(this, this.config.secondBonus, this.counterBonuses[1], "T", 1),
 			new Bonus(this, this.config.thirdBonus, this.counterBonuses[2], "?", 2)
 		];
+		this.mixingColorsFrame = new MixingColorsFrame(this, this.config.mixingColorsFrame, this.countMixingColors);
 		this.btnPause = new ButtonPause(this, this.config.btnPause);
 		this.modalPause = new ModalPause(this, this.config.modalPause);
 		this.modalWinLose = new ModalWinLose(this, this.config.modalWinLose);
@@ -140,10 +145,12 @@ export class MainWindow extends Phaser.Scene {
 			1: false,
 			2: false,
 		};
+		this.countMixingColors = 2;
 		this.headerElements.resetHeaderElements();
 		this.progressBar.resetProgressFillBar();
 		this.scoreField.resetScoreField();
-		this.blastField.shuffleBlocksColor();
+		this.blastField.mixingBlocksColor();
+		this.mixingColorsFrame.resetFrameParams(this.countMixingColors);
 		this.bonuses.forEach((bonus, index) => bonus.resetBonus(this.counterBonuses[index]));
 		this.modalWinLoseCamera.setVisible(false);
 	}
@@ -157,6 +164,12 @@ export class MainWindow extends Phaser.Scene {
 			this.showModalWinLoseGame(true);
 		} else if (this.movesLeftValue < 1) {
 			this.showModalWinLoseGame(false);
-		} 
+		} else {
+			if (checkForAdjacentColorPairs(this.blastField.arrBlocks)) {
+				if (this.countMixingColors === 0) {
+					this.showModalWinLoseGame(false);
+				}
+			} 
+		}
 	}
 }
