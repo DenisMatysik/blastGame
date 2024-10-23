@@ -195,7 +195,7 @@ export function config() {
 				origin: 0
 			}
 		},
-		firstBonus: {
+		bonusRadius: {
 			bg: {
 				x: 625,
 				y: 532,
@@ -237,7 +237,7 @@ export function config() {
 				visible: false
 			}
 		},
-		secondBonus: {
+		bonusLine: {
 			bg: {
 				x: 743,
 				y: 532,
@@ -279,7 +279,7 @@ export function config() {
 				visible: false
 			}
 		},
-		thirdBonus: {
+		bonusTeleport: {
 			bg: {
 				x: 861,
 				y: 532,

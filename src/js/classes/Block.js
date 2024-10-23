@@ -1,5 +1,4 @@
-import { countColumns, dfs, getElementsInTouchRadius, getWinValueByColor, randomIntBetween0And4, sortByColumnAndRow } from "../functions";
-import { MovedImage } from "./MovedImage";
+import { randomIntBetween0And4 } from "../functions";
 
 export class Block {
     scene;
@@ -37,9 +36,11 @@ export class Block {
             origin: config.origin
         })
         .setInteractive({cursor: "pointer"});
-        this.scene.cameras.main.ignore(this.image);
-        this.scene.modalPauseCamera.ignore(this.image);
-        this.scene.modalWinLoseCamera.ignore(this.image);
+        [
+            this.scene.cameras.main,
+            this.scene.modalPauseCamera,
+            this.scene.modalWinLoseCamera
+        ].forEach(camera => camera.ignore(this.image));
     }
 
     /**
@@ -48,131 +49,8 @@ export class Block {
      **/
     _createEvents() {
         this.image.on("pointerup", () => {
-            this.parent.activeDisableAllBlocks(false);
-            const ACTIVE_BONUS = this.scene.getActiveBonus();
-            let groupEmptyElements = [];
-            switch(ACTIVE_BONUS) {
-                case '0':
-                    this.scene.bonuses[ACTIVE_BONUS].updateBonusCount();
-                    getElementsInTouchRadius(
-                        this.rowIndex, 
-                        this.colIndex, 
-                        this.parent.config.rows, 
-                        this.parent.config.cols,
-                        this.scene.radiusBlast,
-                        groupEmptyElements
-                    );
-                    break;
-                case '1': 
-                    break;
-                case '2':
-                    break;
-                default:
-                    const VISITED = Array.from({ length: this.parent.config.rows }, () => Array(this.parent.config.cols).fill(false));
-                    dfs(this.rowIndex, this.colIndex, this.color, VISITED, groupEmptyElements, this.parent.arrBlocks);
-                    break;
-            }
-    
-            if (groupEmptyElements.length >= 2) {
-                // Сортирую массив, чтобы блоки правильно дальше занимали позиции после поднятия вверх
-                sortByColumnAndRow(groupEmptyElements);
-                this._startAnimationMovingUpBlocks(groupEmptyElements);
-                this._startLogicFallingBloks(groupEmptyElements, ACTIVE_BONUS);
-            } else {
-                this.parent.activeDisableAllBlocks(true);
-            }
+            this.scene.blastField.handleBlockClick(this.rowIndex, this.colIndex, this.color);
         });
-    }
-
-    /**
-     * Метод для запуска логики просчёта положения элементов и последующего запуска анимации падения блоков
-     * @private
-     * @param {[number]} group - массив с позициями пустых ячеек
-     * @param {boolean} isActiveBonus - был ли активирован бонус
-     **/
-    _startLogicFallingBloks(group, isActiveBonus) {
-        let winValue = 0;
-        if (isActiveBonus) {
-            const COUNTER_COLORS = {
-                "red": 0,
-                "yellow": 0,
-                "purple": 0,
-                "blue": 0,
-                "green": 0,
-            };
-            group.forEach(block => COUNTER_COLORS[this.parent.arrBlocks[block[0]][block[1]].color]++);
-            winValue = getWinValueByColor(false, false, COUNTER_COLORS);
-        } else {
-            winValue = getWinValueByColor(this.color, group.length);
-        }
-
-        const COUNT_ELEMENTS_COLUMN = countColumns(group);
-        this.scene.progressBar.updateProgressFillBar(winValue);
-        this.scene.scoreField.updateScoreField(winValue);
-        this.scene.headerElements.updateMovesLeft();
-        this.scene.headerElements.updateRemainingPoints(
-            this.scene.remainingPoints - winValue
-        );
-
-        // Изменение положения по Y связанных блоков и задаю случайный цвет блоку
-        group.forEach(([row, column]) => {
-            const BLOCK = this.parent.arrBlocks[row][column];
-            BLOCK.image.setY(
-                this.config.initialY - (COUNT_ELEMENTS_COLUMN[column]) * (this.config.heigth - this.config.offsetY));
-            BLOCK.setRandomColor();
-            COUNT_ELEMENTS_COLUMN[column]--;
-        });
-        this._moveElementsByColorUp(this.parent.arrBlocks, group);
-        const ARR_CHANGED_COLUMNS = Object.keys(COUNT_ELEMENTS_COLUMN).map(Number)
-            
-        this.parent.arrBlocks.forEach((row, rowIndex) => row.forEach((block, colIndex) => {
-            block.rowIndex = rowIndex;
-            // Добавил проверку, чтобы не смотреть колонки, в которых не будет изменене положения элементов
-            if (ARR_CHANGED_COLUMNS.includes(colIndex)) {
-                const CURRENT_Y = block.image.y;
-                const UPDATED_Y = this.config.initialY + rowIndex * (this.config.heigth - this.config.offsetY);
-                // Запускаю анимацию падения блоков
-                if(CURRENT_Y !== UPDATED_Y) {
-                    block.image.setDepth(this.config.initialDepth - this.parent.config.rows * rowIndex + colIndex);
-                    block.startAnimationFallingBlock(block, UPDATED_Y);
-                }
-            }
-        }));
-    }
-
-    /**
-     * Метод для обновления всех блоков в общем массиве arrBlocks
-     * @private
-     * @param {[Phaser.GameObjects]} array - массив с всеми блоками
-     * @param {[number]} group - массив с позициями элементов, котороые пропадут
-     **/
-    _moveElementsByColorUp(array, group) {
-        const COLUMN_COUNT = this.parent.config.cols; // Количество колонок
-        
-        // Перебираем каждую колонку
-        for (let col = 0; col < COLUMN_COUNT; col++) {
-            const MATCHING_ELEMENTS = [];
-            const REMAINING_ELEMENTS = [];
-            
-            // Сначала собираем элементы из текущей колонки
-            for (let row = 0; row < array.length; row++) {
-                const ITEM = array[row][col];
-
-                group.some(([gRow, gCol]) => gRow === row && gCol === col)
-                    ? MATCHING_ELEMENTS.push(ITEM)
-                    : REMAINING_ELEMENTS.push(ITEM);
-            }
-    
-            // Обновляем индексы и формируем новую колонку
-            const UPDATED_COLUMN = [...MATCHING_ELEMENTS, ...REMAINING_ELEMENTS];
-    
-            // Записываем обновленную колонку обратно в массив
-            for (let row = 0; row < array.length; row++) {
-                array[row][col] = UPDATED_COLUMN[row];
-            }
-        }
-    
-        return array;
     }
 
     /**
@@ -188,12 +66,11 @@ export class Block {
     /**
      * Метод который запустит анимацию падения элемента
      * @public
-     * @param {[Phaser.GameObjects]} block - блок
      * @param {number} y - координата на которую должен подняться блок
      **/
-    startAnimationFallingBlock(block, y) {
+    startAnimationFallingBlock(y) {
         this.scene.tweens.add({
-            targets: block.image,
+            targets: this.image,
             y: y,
             duration: 500,
             ease: 'Linear',
@@ -207,26 +84,4 @@ export class Block {
         });
     }
 
-    /**
-     * Метод который создаст копии блоков поверх текущих и запустит анимацию полёта вверх
-     * @private
-     * @param {[number]} group - массив с позициями элементов, котороые пропадут
-     **/
-    _startAnimationMovingUpBlocks(arr) {
-        const CONFIG = this.parent.config.coppyBlock;
-        arr.forEach(block => {
-            const ORIGINAL = this.parent.arrBlocks[block[0]][block[1]].image;
-            const COPPY = new MovedImage(
-                this.scene, 
-                {
-                    x: ORIGINAL.x,
-                    y: ORIGINAL.y,
-                    key: ORIGINAL.texture.key,
-                    depth: CONFIG.depth + ORIGINAL.depth,
-                    origin: CONFIG.origin
-                }, 
-            );
-            COPPY.startAnimationMovingBlock(CONFIG.x, CONFIG.y);
-        });
-    }
 }

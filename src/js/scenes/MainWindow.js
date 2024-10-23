@@ -98,12 +98,12 @@ export class MainWindow extends Phaser.Scene {
 		this.headerElements = new HeaderElements(this, this.config.headerElements);
 		this.progressBar = new ProgressBar(this, this.config.progressBar, this.remainingPoints);
 		this.scoreField = new ScoreField(this, this.config.scoreField);
-		this.blastField = new BlastField(this, this.config.blastField);
+		this.blastField = new BlastField(this, this.config.blastField, 10, 9);
         this.make.text(this.config.bonusesDescription);
 		this.bonuses = [
-			new Bonus(this, this.config.firstBonus, this.counterBonuses[0], "R", 0),
-			new Bonus(this, this.config.secondBonus, this.counterBonuses[1], "T", 1),
-			new Bonus(this, this.config.thirdBonus, this.counterBonuses[2], "?", 2)
+			new Bonus(this, this.config.bonusRadius, this.counterBonuses[0], "R", 0),
+			new Bonus(this, this.config.bonusLine, this.counterBonuses[1], "L", 1),
+			new Bonus(this, this.config.bonusTeleport, this.counterBonuses[2], "T", 2)
 		];
 		this.mixingColorsFrame = new MixingColorsFrame(this, this.config.mixingColorsFrame, this.countMixingColors);
 		this.btnPause = new ButtonPause(this, this.config.btnPause);

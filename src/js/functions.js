@@ -2,32 +2,31 @@ export const randomIntBetween0And4 = () => {
     return Math.floor(Math.random() * 5);
 };
 
-// Алгоритм DFS для поиска группы прилегающих элементов
-export function dfs(row, col, value, visited, group, arrBlocks) {
+// Поиск группы прилегающих элементов по цвету в двумерном массиве arrBlocks (алгоритм DFS)
+export function findAdjacentGroups (row, col, color, visited, group, arrBlocks) {
     // Проверка границ и условий
-    if (row < 0 || row >= 10 || col < 0 || col >= 9 || visited[row][col] || arrBlocks[row][col].color !== value) {
+    if (row < 0 || row >= 10 || col < 0 || col >= 9 || visited[row][col] || arrBlocks[row][col].color !== color) {
         return;
     }
 
     visited[row][col] = true; // Отмечаем ячейку как посещённую
-    group.push([row, col]); // Добавляем ячейку в группу
+    group.push([row, col, color]); // Добавляем ячейку в группу
 
     // Рекурсивно проверяем соседние ячейки (вверх, вниз, влево, вправо)
-    dfs(row - 1, col, value, visited, group, arrBlocks); // Вверх
-    dfs(row + 1, col, value, visited, group, arrBlocks); // Вниз
-    dfs(row, col - 1, value, visited, group, arrBlocks); // Влево
-    dfs(row, col + 1, value, visited, group, arrBlocks); // Вправо
+    findAdjacentGroups (row - 1, col, color, visited, group, arrBlocks); // Вверх
+    findAdjacentGroups (row + 1, col, color, visited, group, arrBlocks); // Вниз
+    findAdjacentGroups (row, col - 1, color, visited, group, arrBlocks); // Влево
+    findAdjacentGroups (row, col + 1, color, visited, group, arrBlocks); // Вправо
 }
 
 // Поиск элементов, в определённом радиусе
-export const getElementsInTouchRadius = (row, col, allRows, allCols, radius, groupEmptyElements) => {
+export const getElementsInTouchRadius = (row, col, allRows, allCols, radius, groupEmptyElements, arrBlocks) => {
     for (let i = Math.max(0, row - radius); i <= Math.min(allRows - 1, row + radius); i++) {
         for (let j = Math.max(0, col - radius); j <= Math.min(allCols - 1, col + radius); j++) {
             const DISTANCE = Math.sqrt((i - row) ** 2 + (j - col) ** 2);
-            DISTANCE <= radius && groupEmptyElements.push([i, j]);
+            DISTANCE <= radius && groupEmptyElements.push([i, j, arrBlocks[i][j].color]);
         }
     }
-    return groupEmptyElements;
 }
 
 export const sortByColumnAndRow = (arr) => {
@@ -53,7 +52,7 @@ export const countColumns = (arr) => {
     return COLUMN_COUNT;
 }
 
-export const getWinValueByColor = (color, count, colorsWin = false) => {
+export const getWinValueByColor = (color, count) => {
     const valueByColor = {
         "yellow": 1,
         "purple": 2,
@@ -61,15 +60,6 @@ export const getWinValueByColor = (color, count, colorsWin = false) => {
         "green": 4,
         "red": 5,
     };
-
-    if (colorsWin) {
-        let win = 0;
-        for (const color in colorsWin) {
-            const COLOR_VALUE = valueByColor[color];
-            win += COLOR_VALUE * colorsWin[color];
-        };
-        return win
-    }
 
     return count * valueByColor[color];
 }
@@ -89,4 +79,31 @@ export function checkForAdjacentColorPairs (matrix) {
         }
     }
     return false; // Пары не найдены
+}
+
+// Метод для обновления положения всех блоков в общем массиве arrBlocks, после того как элементы поднялись вверх
+export const refreshBlockPositions = (array, group, allCols) => {
+    const COLUMN_COUNT = allCols; // Количество колонок
+    // Перебираем каждую колонку
+    for (let col = 0; col < COLUMN_COUNT; col++) {
+        const MATCHING_ELEMENTS = [];
+        const REMAINING_ELEMENTS = [];
+        
+        // Сначала собираем элементы из текущей колонки
+        for (let row = 0; row < array.length; row++) {
+            const ITEM = array[row][col];
+
+            group.some(([gRow, gCol]) => gRow === row && gCol === col)
+                ? MATCHING_ELEMENTS.push(ITEM)
+                : REMAINING_ELEMENTS.push(ITEM);
+        }
+
+        // Обновляем индексы и формируем новую колонку
+        const UPDATED_COLUMN = [...MATCHING_ELEMENTS, ...REMAINING_ELEMENTS];
+
+        // Записываем обновленную колонку обратно в массив
+        for (let row = 0; row < array.length; row++) {
+            array[row][col] = UPDATED_COLUMN[row];
+        }
+    }
 }
