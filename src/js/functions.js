@@ -29,6 +29,13 @@ export const getElementsInTouchRadius = (row, col, allRows, allCols, radius, gro
     }
 }
 
+// Поиск элементов, в линии
+export const getElementsInLine = (row, colIndex, groupEmptyElements, arrBlocks) => {
+    for (let i = 0; i < colIndex; i++) {
+        groupEmptyElements.push([row, i, arrBlocks[row][i].color]);
+    }
+}
+
 export const sortByColumnAndRow = (arr) => {
     return arr.sort((a, b) => {
         // Сравниваем по второму элементу (столбцу)
@@ -107,3 +114,12 @@ export const refreshBlockPositions = (array, group, allCols) => {
         }
     }
 }
+
+// Метод для обновления положения всех блоков в общем массиве arrBlocks, после того как элементы поднялись вверх
+export const getColorCounts = (group) => {
+    return group.reduce((acc, curr) => {
+        const color = curr[2];
+        acc[color] = (acc[color] || 0) + 1;
+        return acc;
+    }, {});
+};

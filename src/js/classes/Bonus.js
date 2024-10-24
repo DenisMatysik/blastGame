@@ -103,4 +103,13 @@ export class Bonus {
         this.showHideBonus(false);
         this.activeDisableBtn(value > 0);
     }
+
+    /**
+     * Метод задаст количество бонусов и оотбразит значение
+     * @public
+     **/
+    setBonusCount(value) {
+        this.bonusCount += value;
+        this.bonusText.setText(this.bonusCount);
+    }
 }

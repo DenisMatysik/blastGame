@@ -41,7 +41,7 @@ export class ModalPause {
             ...config.bonusRadiusText,
             text: `${config.bonusRadiusText.text} ${this.scene.radiusBlast}`
         });
-        const bonusTeleportText = this.scene.make.text(config.bonusTeleportText);
+        const bonusTeleportText = this.scene.make.text(config.bonusLineText);
         const scoreText = this.scene.make.text(config.scoreText);
 
 

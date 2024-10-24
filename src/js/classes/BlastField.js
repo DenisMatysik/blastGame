@@ -1,4 +1,4 @@
-import { checkForAdjacentColorPairs, countColumns, findAdjacentGroups , getElementsInTouchRadius, getWinValueByColor, randomIntBetween0And4, refreshBlockPositions, sortByColumnAndRow } from "../functions";
+import { checkForAdjacentColorPairs, countColumns, findAdjacentGroups , getColorCounts, getElementsInLine, getElementsInTouchRadius, getWinValueByColor, randomIntBetween0And4, refreshBlockPositions, sortByColumnAndRow } from "../functions";
 import { Block } from "./Block";
 import { MovedImage } from "./MovedImage";
 
@@ -94,6 +94,12 @@ export class BlastField {
                 );
                 break;
             case '1': 
+                getElementsInLine(
+                    rowIndex,
+                    this.allCols,
+                    groupEmptyElements,
+                    this.arrBlocks
+                );
                 break;
             case '2':
                 break;
@@ -119,7 +125,21 @@ export class BlastField {
         const CONFIG = this.config.block;
         // Сортирую массив, чтобы блоки правильно занимали позиции после поднятия вверх
         sortByColumnAndRow(group);
-        this._startAnimationMovingUpBlocks(group);
+        const BONUSES_LINE = this._checkColorsForBonusLines(getColorCounts(group));
+        console.log("BONUSES_LINE", BONUSES_LINE);
+        if (BONUSES_LINE.count === 0) {
+            this._startAnimationMovingUpBlocks(group, false);
+        } else {
+            const COPPY_GROUP = [...group];
+            const MOVED_TO_BONUS_LINE_GROUP = [];
+            BONUSES_LINE.colors.forEach(color => {
+                const element = COPPY_GROUP.find(subArray => subArray[2] === color);
+                MOVED_TO_BONUS_LINE_GROUP.push(element);
+                COPPY_GROUP.splice(COPPY_GROUP.indexOf(element), 1);
+            });
+            this._startAnimationMovingUpBlocks(COPPY_GROUP, false);
+            this._startAnimationMovingUpBlocks(MOVED_TO_BONUS_LINE_GROUP, true);
+        }
         const COUNT_ELEMENTS_COLUMN = countColumns(group);
         // Изменение положения по Y связанных блоков и задаю случайный цвет блоку
         group.forEach(([row, column]) => {
@@ -170,11 +190,12 @@ export class BlastField {
     }
 
     /**
-     * Метод который создаст копии блоков поверх текущих и запустит анимацию полёта копий вверх
+     * Метод который создаст копии блоков поверх текущих и запустит анимацию полёта копий вверх или к бонусу с линиями
      * @private
      * @param {[number]} group - массив с позициями элементов, котороые пропадут
+     * @param {boolean} isMovedToBonusLine - символы должны лететь к бонусу с линиями
      **/
-    _startAnimationMovingUpBlocks(arr) {
+    _startAnimationMovingUpBlocks(arr, isMovedToBonusLine) {
         const CONFIG = this.config.coppyBlock;
         arr.forEach(block => {
             const ORIGINAL = this.arrBlocks[block[0]][block[1]].image;
@@ -188,7 +209,31 @@ export class BlastField {
                     origin: CONFIG.origin
                 }, 
             );
-            COPPY.startAnimationMovingBlock(CONFIG.x, CONFIG.y);
+            COPPY.startAnimationMovingBlock(
+                isMovedToBonusLine ? CONFIG.bonusLineX : CONFIG.x, 
+                isMovedToBonusLine ? CONFIG.bonusLineY : CONFIG.y,
+                isMovedToBonusLine
+            );
         });
+    }
+
+    /**
+     * Метод который посчитает количество бонусов, которое нужно добавить
+     * @private
+     * @param {{string}} obj - объект, с количеством цветов элементов
+     **/
+    _checkColorsForBonusLines(obj) {
+        const BONUSES_LINE = {
+            count: 0,
+            colors: []
+        };
+
+        for (let item in obj) {
+            if (obj[item] >= 10) {
+                BONUSES_LINE.count++;
+                BONUSES_LINE.colors.push(item);
+            }
+        }
+        return BONUSES_LINE;
     }
 }

@@ -29,12 +29,12 @@ export class MainWindow extends Phaser.Scene {
 	activeBonuses = {
 		0: false,
 		1: false,
-		2: false,
+		// 2: false,
 	};
 	counterBonuses = {
 		0: 5,
 		1: 0,
-		2: 0,
+		// 2: 0,
 	};
 	radiusBlast = 3;
 	countMixingColors = 2;
@@ -103,7 +103,7 @@ export class MainWindow extends Phaser.Scene {
 		this.bonuses = [
 			new Bonus(this, this.config.bonusRadius, this.counterBonuses[0], "R", 0),
 			new Bonus(this, this.config.bonusLine, this.counterBonuses[1], "L", 1),
-			new Bonus(this, this.config.bonusTeleport, this.counterBonuses[2], "T", 2)
+			// new Bonus(this, this.config.bonusTeleport, this.counterBonuses[2], "T", 2)
 		];
 		this.mixingColorsFrame = new MixingColorsFrame(this, this.config.mixingColorsFrame, this.countMixingColors);
 		this.btnPause = new ButtonPause(this, this.config.btnPause);
@@ -171,5 +171,14 @@ export class MainWindow extends Phaser.Scene {
 				}
 			} 
 		}
+	}
+
+	/**
+     * Метод для обновления значения бонуса с линиями
+     * @public
+     **/
+	updateBonusLine() {
+		this.bonuses[1].activeDisableBtn(true);
+		this.bonuses[1].setBonusCount(1);
 	}
 }

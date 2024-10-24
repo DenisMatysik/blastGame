@@ -192,7 +192,9 @@ export function config() {
 				x: 512,
 				y: -57,
 				depth: 90,
-				origin: 0
+				origin: 0,
+				bonusLineX: 783,
+				bonusLineY: 572
 			}
 		},
 		bonusRadius: {
@@ -397,7 +399,7 @@ export function config() {
 			blockColors: ["yellow", "purple", "blue", "green", "red"],
 			bonusesText: {
 				x: 420,
-				y: 405,
+				y: 395,
 				offsetY: 70,
 				offsetX: 300,
 				text: "БОНУСЫ",
@@ -410,14 +412,14 @@ export function config() {
 			},
 			markerActiveBonus: {
 				x: 300,
-				y: 385 + 100,
+				y: 385 + 70,
 				key: "markerActiveBonus",
 				origin: 0,
 				scale: 1,
 			},
 			textActiveBonus: {
 				x: 335,
-				y: 378 + 100,
+				y: 378 + 70,
 				text: "- БОНУС АКТИВИРОВАН",
 				style: {
 					fontSize: "30px",
@@ -427,7 +429,7 @@ export function config() {
 			},
 			bonusRadiusText: {
 				x: 300,
-				y: 478 + 50,
+				y: 478 + 15,
 				offsetY: 70,
 				offsetX: 300,
 				text: "R - ВЗРЫВ РАДИУСОМ",
@@ -438,16 +440,17 @@ export function config() {
 				},
 				origin: 0
 			},
-			bonusTeleportText: {
+			bonusLineText: {
 				x: 300,
-				y: 578,
+				y: 538,
 				offsetY: 70,
 				offsetX: 300,
-				text: "T,? - НЕ РАБОТАЕТ",
+				text: "L - ВЗРЫВ ПО ЛИНИИ (ПОЯВЛЯЕТСЯ ПРИ ВЗРЫВЕ 10 БЛОКОВ ОДНОГО ЦВЕТА)",
 				style: {
-					fontSize: "30px",
+					fontSize: "25px",
 					fontFamily: "Marvin",
 					color: "#ffffff",
+					wordWrap: { width: 450, useAdvancedWrap: true }
 				},
 				origin: 0
 			},
