@@ -11,7 +11,7 @@ export class ModalPause {
         this.scene = scene;
         this.config = config;
 
-        this._createElements(config);
+        this._createElements();
         this._createEvents();
         // Отключаем отображение элементов в других камерах
         this.children.forEach(el => {
@@ -22,29 +22,27 @@ export class ModalPause {
     }
 
     /**
-     * Метод создает элементы поля текущими очками за раунд
+     * Метод создает элементы класса ModalPause
      * @private
-     * @param {{string}} config - конфиг с параметрами
      **/
-    _createElements(config) {
+    _createElements() {
         this.bg = this.scene.make
-            .image(config.bg)
+            .image(this.config.bg)
             .setInteractive({cursor: "pointer"});
-        const btnClose = new ButtonClose(this.scene, config.btnClose);
+        const btnClose = new ButtonClose(this.scene, this.config.btnClose);
         const frame = this.scene.make
-            .image(config.frame)
+            .image(this.config.frame)
             .setInteractive();
-        const bonusesText = this.scene.make.text(config.bonusesText);
-        const markerActiveBonus = this.scene.make.image(config.markerActiveBonus);
-        const textActiveBonus = this.scene.make.text(config.textActiveBonus);
+        const bonusesText = this.scene.make.text(this.config.bonusesText);
+        const markerActiveBonus = this.scene.make.image(this.config.markerActiveBonus);
+        const textActiveBonus = this.scene.make.text(this.config.textActiveBonus);
         const bonusRadiusText = this.scene.make.text({
-            ...config.bonusRadiusText,
-            text: `${config.bonusRadiusText.text} ${this.scene.radiusBlast}`
+            ...this.config.bonusRadiusText,
+            text: `${this.config.bonusRadiusText.text} ${this.scene.radiusBlast}`
         });
-        const bonusLineText = this.scene.make.text(config.bonusLineText);
-        const scoreText = this.scene.make.text(config.scoreText);
-        const superBonusText = this.scene.make.text(config.superBonusText);
-
+        const bonusLineText = this.scene.make.text(this.config.bonusLineText);
+        const scoreText = this.scene.make.text(this.config.scoreText);
+        const superBonusText = this.scene.make.text(this.config.superBonusText);
 
         this.children = [
             this.bg,
@@ -58,18 +56,19 @@ export class ModalPause {
             bonusLineText,
             superBonusText
         ];
-        config.blockColors.forEach((color, index) => {
+
+        this.scene.config.blockColors.forEach((color, index) => {
             const ROW = Math.floor(index / 2);
             const block = this.scene.make.image({
-                ...config.block,
-                x: config.block.x + (index % 2) * config.block.offsetX,
-                y: config.block.y + ROW * config.block.offsetY,
+                ...this.config.block,
+                x: this.config.block.x + (index % 2) * this.config.block.offsetX,
+                y: this.config.block.y + ROW * this.config.block.offsetY,
                 key: color
             });
             const text = this.scene.make.text({
-                ...config.text,
-                x: config.text.x + (index % 2) * config.text.offsetX,
-                y: config.text.y + ROW * config.text.offsetY,
+                ...this.config.text,
+                x: this.config.text.x + (index % 2) * this.config.text.offsetX,
+                y: this.config.text.y + ROW * this.config.text.offsetY,
                 text: `- ${getWinValueByColor(color, 1)}`
             });
             this.children.push(block);
@@ -77,13 +76,11 @@ export class ModalPause {
         }); 
     }
 
-        /**
+    /**
      * Метод для создания событий
      * @private
      **/
     _createEvents() {
-        this.bg.on("pointerup", () => {
-		    this.scene.modalPauseCamera.setVisible(false);
-        });
+        this.bg.on("pointerup", () => this.scene.handleModalPauseBgClick());
     }
 }

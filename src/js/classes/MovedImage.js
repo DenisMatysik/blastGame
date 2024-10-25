@@ -5,21 +5,21 @@ export class MovedImage {
 
     constructor(scene, config) {
         this.scene = scene;
+        this.config = config;
 
-        this._createElements(config);
+        this._createElements();
     }
 
     /**
-     * Метод создает картинку
+     * Метод создает элементы класса MovedImage
      * @private
-     * @param {{string}} config - конфиг с параметрами
      **/
-    _createElements(config) {
-        this.image = this.scene.make.image(config);
+    _createElements() {
+        this.image = this.scene.make.image(this.config);
     }
 
     /**
-     * Метод который запустит анимацию полёта элемента всторону
+     * Метод для запуска анимации полёта картинки
      * @private
      * @param {number} x - точка по х куда полетиит блок
      * @param {number} y - точка по y куда полетиит блок

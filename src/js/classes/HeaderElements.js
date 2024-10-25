@@ -4,27 +4,33 @@ export class HeaderElements {
     movesLeft;
     scoreRemaining;
 
-    constructor(scene, config) {
+    constructor(scene, config, movesLeftValue, remainingPoints) {
         this.scene = scene;
+        this.config = config;
 
-        this._createElements(config);
-        this.updateMovesLeft(this.scene.movesLeftValue);
-        this.updateRemainingPoints(this.scene.remainingPoints);
+        this._createElements(movesLeftValue, remainingPoints);
     }
 
     /**
-     * Метод создает элементы для шапки приложения
+     * Метод создает элементы класса HeaderElements
      * @private
-     * @param {{string}} config - конфиг с параметрами
+     * @param {number} movesLeftValue - значение поля "Осталось ходов"
+     * @param {number} remainingPoints - новое значение поля "Осталось"
      **/
-    _createElements(config) {
-        this.scene.make.image(config.bg);
-        this.scene.make.image(config.redField);
-        this.scene.make.image(config.purpleField);
-        this.scene.make.text(config.redFieldText);
-        this.scene.make.text(config.purpleFieldText);
-        this.movesLeft = this.scene.make.text(config.redFieldValue);
-        this.scoreRemaining = this.scene.make.text(config.purpleFieldValue);
+    _createElements(movesLeftValue, remainingPoints) {
+        this.scene.make.image(this.config.bg);
+        this.scene.make.image(this.config.redField);
+        this.scene.make.image(this.config.purpleField);
+        this.scene.make.text(this.config.redFieldText);
+        this.scene.make.text(this.config.purpleFieldText);
+        this.movesLeft = this.scene.make.text({
+            ...this.config.redFieldValue, 
+            text: movesLeftValue
+        });
+        this.scoreRemaining = this.scene.make.text({
+            ...this.config.purpleFieldValue,
+            text: remainingPoints
+        });
     }
 
     /**
@@ -33,28 +39,24 @@ export class HeaderElements {
      * @param {number} value - новое значение поля "Осталось"
      **/
     updateRemainingPoints(value) {
-        this.scene.remainingPoints = value;
-        this.scoreRemaining.setText(this.scene.remainingPoints);
+        this.scoreRemaining.setText(value);
     }
 
     /**
      * Метод обновляет значение счётчика оставшихся ходов
      * @public
-     * @param {number} value - новое значение счётчика
+     * @param {number} value - новое значение поля "Осталось ходов"
      **/
     updateMovesLeft (value) {
-        value 
-            ? this.scene.movesLeftValue = value
-            : this.scene.movesLeftValue -= 1;
-        this.movesLeft.setText(this.scene.movesLeftValue);
+        this.movesLeft.setText(value);
     }
 
     /**
-     * Метод сбросит все значения элементов header
+     * Метод сбросит все значения класса HeaderElements
      * @public
      **/
-    resetHeaderElements() {
-        this.movesLeft.setText(this.scene.movesLeftValue);
-        this.scoreRemaining.setText(this.scene.remainingPoints);
+    resetHeaderElements(movesLeftValue, remainingPoints) {
+        this.movesLeft.setText(movesLeftValue);
+        this.scoreRemaining.setText(remainingPoints);
     }
 }

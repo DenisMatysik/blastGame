@@ -7,38 +7,35 @@ export class Bonus {
     bonusText;
     bonusName;
     bonusCount = 0;
-    bonusNumber = 0;
     isBonusActive = false;
 
-    constructor(scene, config, bonusCount, bonusName, bonusNumber) {
+    constructor(scene, config, bonusCount, bonusName) {
         this.scene = scene;
         this.config = config;
         this.bonusCount = bonusCount;
-        this.bonusNumber = bonusNumber;
-        this._createElements(config, bonusName);
+        this.bonusName = bonusName;
+        this._createElements();
         this._createEvents();
-        this.activeDisableBtn(bonusCount > 0);
+        this.activeDisableBonus(bonusCount > 0);
     }
 
     /**
-     * Метод создает элементы поля текущими очками за раунд
+     * Метод создает элементы класса Bonus
      * @private
-     * @param {{string}} config - конфиг с параметрами
-     * @param {string} bonusName - название бонуса
      **/
-    _createElements(config, bonusName) {
+    _createElements() {
 		this.image = this.scene.make
-            .image(config.bg)
+            .image(this.config.bg)
             .setInteractive({cursor: "pointer"});
         this.bonusText = this.scene.make.text({
-            ...config.text,
+            ...this.config.text,
             text: this.bonusCount
         });
-        this.bonusName = this.scene.make.text({
-            ...config.bonusName,
-            text: bonusName
+        this.scene.make.text({
+            ...this.config.bonusName,
+            text: this.bonusName
         });
-        this.marker = this.scene.make.image(config.marker);
+        this.marker = this.scene.make.image(this.config.marker);
     }
 
     /**
@@ -47,13 +44,11 @@ export class Bonus {
      **/
     _createEvents() {
         this.image.on("pointerup", () => {
+            this.scene[this.bonusName === "R" ? "isActiveBonusRadius" : "isActiveBonusLine"] = !this.isBonusActive;
             this.showHideBonus(!this.isBonusActive);
-            this.scene.activeBonuses[this.bonusNumber] = this.isBonusActive;
-
-            this.scene.bonuses.filter(bonus => bonus!== this).forEach(bonus => {
-                bonus.showHideBonus(false);
-                this.scene.activeBonuses[bonus.bonusNumber] = false;
-            });
+            // Сбрасываю активное состояние предыдущего бонуса
+            this.scene[this.bonusName !== "R" ? "bonusRadius" : "bonusLine"].showHideBonus(false);
+            this.scene[this.bonusName !== "R" ? "isActiveBonusRadius" : "isActiveBonusLine"] = false;
         });
     }
 
@@ -62,7 +57,7 @@ export class Bonus {
      * @public
      * @param {boolean} state - true(разблокировать)/заблокировать
      **/
-    activeDisableBtn(state) {
+    activeDisableBonus(state) {
         state
             ? this.image.setInteractive({cursor: "pointer"}).setAlpha(1)
             : this.image.disableInteractive().setAlpha(0.5);
@@ -86,9 +81,9 @@ export class Bonus {
         this.bonusCount--;
         this.bonusText.setText(this.bonusCount);
         if (this.bonusCount === 0) {
-            this.activeDisableBtn(false);
+            this.activeDisableBonus(false);
             this.showHideBonus(false);
-            this.scene.activeBonuses[this.bonusNumber] = false;
+            this.scene[this.bonusName === "R" ? "isActiveBonusRadius" : "isActiveBonusLine"] = false;
         } 
     }
 
@@ -101,7 +96,7 @@ export class Bonus {
         this.bonusText.setText(value);
         this.bonusCount = value;
         this.showHideBonus(false);
-        this.activeDisableBtn(value > 0);
+        this.activeDisableBonus(value > 0);
     }
 
     /**

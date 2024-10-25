@@ -1,6 +1,7 @@
 export function config() {
 	return {
 		winningValue: 1000,
+		blockColors: ["yellow", "purple", "blue", "green", "red"],
 		bg: {
 			x: 0,
 			y: 0,
@@ -158,13 +159,6 @@ export function config() {
 					y: 1
 				}
 			},
-			blocksName: [
-				"green",
-				"purple",
-				"red",
-				"yellow",
-				"blue"
-			],
 			block: {
 				initialX: 53,
 				initialY: 141,
@@ -289,48 +283,48 @@ export function config() {
 				visible: false
 			}
 		},
-		bonusTeleport: {
-			bg: {
-				x: 861,
-				y: 532,
-				key: "bonus",
-				origin: 0
-			},
-			text: {
-				x: 914,
-				y: 622,
-				style: {
-					fontSize: "20px",
-					fontFamily: "Marvin",
-					color: "#ffffff",
-				},
-				origin: {
-					x: 0.5,
-					y: 0.5
-				}
-			},
-			bonusName: {
-				x: 924,
-				y: 575,
-				style: {
-					fontSize: "40px",
-					fontFamily: "Marvin",
-					color: "#ffffff",
-				},
-				origin: {
-					x: 0.5,
-					y: 0.5
-				}
-			},
-			marker: {
-				x: 933,
-				y: 613,
-				key: "markerActiveBonus",
-				origin: 0,
-				scale: 1,
-				visible: false
-			}
-		},
+		// bonusTeleport: {
+		// 	bg: {
+		// 		x: 861,
+		// 		y: 532,
+		// 		key: "bonus",
+		// 		origin: 0
+		// 	},
+		// 	text: {
+		// 		x: 914,
+		// 		y: 622,
+		// 		style: {
+		// 			fontSize: "20px",
+		// 			fontFamily: "Marvin",
+		// 			color: "#ffffff",
+		// 		},
+		// 		origin: {
+		// 			x: 0.5,
+		// 			y: 0.5
+		// 		}
+		// 	},
+		// 	bonusName: {
+		// 		x: 924,
+		// 		y: 575,
+		// 		style: {
+		// 			fontSize: "40px",
+		// 			fontFamily: "Marvin",
+		// 			color: "#ffffff",
+		// 		},
+		// 		origin: {
+		// 			x: 0.5,
+		// 			y: 0.5
+		// 		}
+		// 	},
+		// 	marker: {
+		// 		x: 933,
+		// 		y: 613,
+		// 		key: "markerActiveBonus",
+		// 		origin: 0,
+		// 		scale: 1,
+		// 		visible: false
+		// 	}
+		// },
 		btnPause: {
 			x: 929,
 			y: 6,
@@ -404,10 +398,9 @@ export function config() {
 				},
 				origin: 0.5
 			},
-			blockColors: ["yellow", "purple", "blue", "green", "red"],
 			bonusesText: {
-				x: 420 + 20,
-				y: 335 + 20,
+				x: 470,
+				y: 320,
 				offsetY: 70,
 				offsetX: 300,
 				text: "БОНУСЫ",
@@ -420,14 +413,14 @@ export function config() {
 			},
 			markerActiveBonus: {
 				x: 300,
-				y: 385 + 40,
+				y: 385 ,
 				key: "markerActiveBonus",
 				origin: 0,
 				scale: 1,
 			},
 			textActiveBonus: {
 				x: 335,
-				y: 378 + 40,
+				y: 380,
 				text: "- БОНУС АКТИВИРОВАН",
 				style: {
 					fontSize: "25px",
@@ -437,7 +430,7 @@ export function config() {
 			},
 			bonusRadiusText: {
 				x: 300,
-				y: 465,
+				y: 420,
 				text: "R - ВЗРЫВ РАДИУСОМ",
 				style: {
 					fontSize: "25px",
@@ -448,7 +441,7 @@ export function config() {
 			},
 			bonusLineText: {
 				x: 300,
-				y: 508,
+				y: 455,
 				text: "L - ВЗРЫВ ПО ЛИНИИ (ПОЯВЛЯЕТСЯ ПРИ ВЗРЫВЕ 8 БЛОКОВ ОДНОГО ЦВЕТА)",
 				style: {
 					fontSize: "25px",
@@ -460,8 +453,8 @@ export function config() {
 			},
 			superBonusText: {
 				x: 300,
-				y: 608,
-				text: "S - ВЗРЫВ ВСЕГО ПОЛЯ (ПОЯВЛЯЕТСЯ ПРИ ВЗРЫВЕ 13 БЛОКОВ ОДНОГО ЦВЕТА)",
+				y: 550,
+				text: "S - ВЗРЫВ ВСЕГО ПОЛЯ (ПОЯВЛЯЕТСЯ ПРИ ВЗРЫВЕ 12 БЛОКОВ ОДНОГО ЦВЕТА)",
 				style: {
 					fontSize: "25px",
 					fontFamily: "Marvin",
@@ -531,7 +524,7 @@ export function config() {
 				}
 			},
 		},
-		mixingColorsFrame: {
+		mixingColors: {
 			text: {
 				x: 40,
 				y: 685,

@@ -7,25 +7,25 @@ export class ProgressBar {
 
     constructor(scene, config, allPoints) {
         this.scene = scene;
+        this.config = config;
         this.allPoints = allPoints;
 
-        this._createElements(config);
-        this.resetProgressFillBar();
+        this._createElements();
+        this.resetProgressBar();
     }
 
     /**
-     * Метод создает элементы поля "Прогресс"
+     * Метод создает элементы класса ProgressBar
      * @private
-     * @param {{string}} config - конфиг с параметрами
      **/
-    _createElements(config) {
-        this.scene.make.image(config.bg);
-        this.scene.make.text(config.text);
-        this.fill = this.scene.make.image(config.fill);
+    _createElements() {
+        this.scene.make.image(this.config.bg);
+        this.scene.make.text(this.config.text);
+        this.fill = this.scene.make.image(this.config.fill);
     }
 
     /**
-     * Метод для обновления полосы загрузки "Прогресс"
+     * Метод для обновления полосы 
      * @public
      * @param {number} value - значение от 0-1, где 1 - 100% видимость элемента
      **/
@@ -36,10 +36,10 @@ export class ProgressBar {
 	}
 
     /**
-     * Метод для сброса полосы загрузки "Прогресс"
+     * Метод для сброса значений класса ProgressBar
      * @public
      **/
-    resetProgressFillBar() {
+    resetProgressBar() {
         this.fill.setCrop(0, 0, 0, this.fill.height);
         this.fillValue = 0;
     }

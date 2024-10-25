@@ -2,10 +2,10 @@ import { BlastField } from "../classes/BlastField";
 import { Bonus } from "../classes/Bonus";
 import { ButtonPause } from "../classes/ButtonPause";
 import { HeaderElements } from "../classes/HeaderElements";
-import { MixingColorsFrame } from "../classes/MixingColorsFrame";
+import { MixingColors } from "../classes/MixingColors";
 import { ModalPause } from "../classes/ModalPause";
 import { ModalWinLose } from "../classes/ModalWinLose";
-import {ProgressBar} from "../classes/ProgressBar";
+import { ProgressBar } from "../classes/ProgressBar";
 import { ScoreField } from "../classes/ScoreField";
 import {config} from "../constants/mainWindowGC";
 import { checkForAdjacentColorPairs } from "../functions";
@@ -20,20 +20,17 @@ export class MainWindow extends Phaser.Scene {
 	scoreField;
 	blastField;
 	btnPause;
-	mixingColorsFrame;
+	mixingColors;
 	modalPause;
 	modalWinLose;
-	bonuses = [];
+	bonusRadius;
+	bonusLine;
 	movesLeftValue = 50;
     remainingPoints = 1000;
-	activeBonuses = {
-		0: false,
-		1: false,
-	};
-	counterBonuses = {
-		0: 5,
-		1: 0,
-	};
+	isActiveBonusRadius = false;
+	isActiveBonusLine = false;
+	bonusRadiusCount = 5;
+	bonusLineCount = 0;
 	radiusBlast = 3;
 	countMixingColors = 2;
 
@@ -93,17 +90,14 @@ export class MainWindow extends Phaser.Scene {
      **/
     _createElements() {
 		this.make.image(this.config.bg);
-		this.headerElements = new HeaderElements(this, this.config.headerElements);
+		this.headerElements = new HeaderElements(this, this.config.headerElements, this.movesLeftValue, this.remainingPoints);
 		this.progressBar = new ProgressBar(this, this.config.progressBar, this.remainingPoints);
 		this.scoreField = new ScoreField(this, this.config.scoreField);
 		this.blastField = new BlastField(this, this.config.blastField, 10, 9);
         this.make.text(this.config.bonusesDescription);
-		this.bonuses = [
-			new Bonus(this, this.config.bonusRadius, this.counterBonuses[0], "R", 0),
-			new Bonus(this, this.config.bonusLine, this.counterBonuses[1], "L", 1),
-			// new Bonus(this, this.config.bonusTeleport, this.counterBonuses[2], "T", 2)
-		];
-		this.mixingColorsFrame = new MixingColorsFrame(this, this.config.mixingColorsFrame, this.countMixingColors);
+		this.bonusRadius = new Bonus(this, this.config.bonusRadius, this.bonusRadiusCount, "R");
+		this.bonusLine = new Bonus(this, this.config.bonusLine, this.bonusLineCount, "L");
+		this.mixingColors = new MixingColors(this, this.config.mixingColors, this.countMixingColors);
 		this.btnPause = new ButtonPause(this, this.config.btnPause);
 		this.modalPause = new ModalPause(this, this.config.modalPause);
 		this.modalWinLose = new ModalWinLose(this, this.config.modalWinLose);
@@ -114,10 +108,11 @@ export class MainWindow extends Phaser.Scene {
      * @public
      **/
 	getActiveBonus() {
-		for (const key in this.activeBonuses) {
-			if (this.activeBonuses[key] === true) {
-				return key;
-			}
+		if (this.isActiveBonusRadius) {
+			return "0"
+		}
+		if (this.isActiveBonusLine) {
+			return "1"
 		}
 		return false;
 	}
@@ -125,8 +120,10 @@ export class MainWindow extends Phaser.Scene {
 	/**
      * Метод который отобразит модальное окно с информацией о конце игры
      * @public
+     * @param {boolean} state - true(отобразить)/false(скрыть)
+	 * 
      **/
-	showModalWinLoseGame(state) {
+	showHideModalWinLoseGame(state) {
 		this.modalWinLose.updateModal(state);
 		this.modalWinLoseCamera.setVisible(true);
 	}
@@ -138,18 +135,19 @@ export class MainWindow extends Phaser.Scene {
 	refreshGame() {
 		this.movesLeftValue = 50;
     	this.remainingPoints = 1000;
-		this.activeBonuses = {
-			0: false,
-			1: false,
-			2: false,
-		};
 		this.countMixingColors = 2;
-		this.headerElements.resetHeaderElements();
-		this.progressBar.resetProgressFillBar();
+		this.isActiveBonusRadius = false;
+		this.isActiveBonusLine = false;
+		this.bonusRadiusCount = 5;
+		this.bonusLineCount = 0;
+		this.headerElements.resetHeaderElements(this.movesLeftValue, this.remainingPoints);
+		this.progressBar.resetProgressBar();
 		this.scoreField.resetScoreField();
 		this.blastField.mixingBlocksColor();
-		this.mixingColorsFrame.resetFrameParams(this.countMixingColors);
-		this.bonuses.forEach((bonus, index) => bonus.resetBonus(this.counterBonuses[index]));
+		this.activeDisableAllInteractiveElements(true);
+		this.mixingColors.resetMixingColors(this.countMixingColors);
+		this.bonusRadius.resetBonus(this.bonusRadiusCount);
+		this.bonusLine.resetBonus(this.bonusLineCount);
 		this.modalWinLoseCamera.setVisible(false);
 	}
 
@@ -158,17 +156,33 @@ export class MainWindow extends Phaser.Scene {
      * @public
      **/
 	checkGameState() {
-		if (this.progressBar.fillValue >= 1) {
-			this.showModalWinLoseGame(true);
-		} else if (this.movesLeftValue < 1) {
-			this.showModalWinLoseGame(false);
-		} else {
-			if (!checkForAdjacentColorPairs(this.blastField.arrBlocks)) {
-				if (this.countMixingColors === 0) {
-					this.showModalWinLoseGame(false);
-				}
-			} 
+		let win = this.progressBar.fillValue >= 1;
+		let lose = this.movesLeftValue < 1 || !checkForAdjacentColorPairs(this.blastField.arrBlocks);
+
+		if (win) {
+			this.activeDisableAllInteractiveElements(false);
+			setTimeout(() => this.showHideModalWinLoseGame(true), 1000);
+		} else if(lose) {
+			this.activeDisableAllInteractiveElements(false);
+			setTimeout(() => this.showHideModalWinLoseGame(false), 1000);
 		}
+	}
+
+	/**
+     * Метод для блокировки/разблокировки всех интерактивных элементов
+     * @public
+     * @param {boolean} state - true(разблокировать)/false(заблокировать)
+     **/
+	activeDisableAllInteractiveElements(state) {
+		this.bonusRadius.activeDisableBonus(state);
+		this.bonusLine.activeDisableBonus(state);
+		if (!state) {
+			this.bonusRadius.showHideBonus(state);
+			this.bonusLine.showHideBonus(state);
+		}
+		this.blastField.activeDisableAllBlocks(state);
+		this.mixingColors.activeDisableMixingColorsBtn(state);
+		this.btnPause.activeDisableBtn(state);
 	}
 
 	/**
@@ -176,7 +190,85 @@ export class MainWindow extends Phaser.Scene {
      * @public
      **/
 	updateBonusLine() {
-		this.bonuses[1].activeDisableBtn(true);
-		this.bonuses[1].setBonusCount(1);
+		this.bonusLine.activeDisableBonus(true);
+		this.bonusLine.setBonusCount(1);
+	}
+
+	/**
+     * Метод для обновления значения поля "Осталось ходов"
+     * @public
+     **/
+	updateMovesLeft() {
+		this.movesLeftValue--;
+		this.headerElements.updateMovesLeft(this.movesLeftValue);
+	}
+
+	/**
+     * Метод для обновления значения поля "Осталось"
+     * @public
+     * @param {number} value - новое значение поля "Осталось"
+     **/
+	updateRemainingPoints(value) {
+		this.remainingPoints = value;;
+		this.headerElements.updateRemainingPoints(this.remainingPoints);
+	}
+
+	/**
+     * Метод для обработки клика по конопке перемешать
+     * @public
+     **/
+	handleButtonMixingClick() {
+        this.countMixingColors--;
+		this.blastField.mixingBlocksColor(true);
+        this.mixingColors.updateMixingColorsText(this.countMixingColors);
+		this.countMixingColors === 0 && this.mixingColors.activeDisableMixingColorsBtn(false);
+	}
+
+	/**
+     * Метод для обработки клика по конопке "Заново"
+     * @public
+     **/
+	handleButtonRefreshClick() {
+		this.refreshGame();
+	}
+
+	/**
+     * Метод для обработки клика по конопке "Pause"
+     * @public
+     **/
+	handleButtonPauesClick() {
+		this.modalPauseCamera.setVisible(true);
+	}
+
+	/**
+     * Метод для обработки клика по конопке "Close"
+     * @public
+     **/
+	handleButtonCloseClick() {
+		this.modalPauseCamera.setVisible(false);
+	}
+
+	/**
+     * Метод для обработки клика по заднему фону модального окна "ModalPause"
+     * @public
+     **/
+	handleModalPauseBgClick() {
+		this.modalPauseCamera.setVisible(false);
+	}
+
+	/**
+	 * Проверка на возможность продолжить игру после перемешивания
+     * @public
+     **/
+	checkPosibilityToContinueGame() {
+		if (
+			this.countMixingColors === 0 
+			&& !checkForAdjacentColorPairs(this.blastField.arrBlocks) 
+			&& this.bonusRadiusCount === 0 
+			&& this.bonusLineCount === 0
+		) {
+			this.activeDisableAllInteractiveElements(false);
+			setTimeout(() => this.scene.showHideModalWinLoseGame(false), 1000);
+		}
 	}
 }

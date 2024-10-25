@@ -7,18 +7,17 @@ export class ButtonMixing {
         this.scene = scene;
         this.config = config;
 
-        this._createElements(config);
+        this._createElements();
         this._createEvents();
     }
 
     /**
-     * Метод создает элементы поля текущими очками за раунд
+     * Метод создает элементы класса ButtonMixing
      * @private
-     * @param {{string}} config - конфиг с параметрами
      **/
-    _createElements(config) {
+    _createElements() {
         this.image = this.scene.make
-            .image(config)
+            .image(this.config)
             .setInteractive({cursor: "pointer"});
     }
 
@@ -27,14 +26,7 @@ export class ButtonMixing {
      * @private
      **/
     _createEvents() {
-        this.image.on("pointerup", () => {
-            this.scene.blastField.mixingBlocksColor(true);
-            this.scene.countMixingColors--;
-            this.scene.mixingColorsFrame.updateMixingColorsText(this.scene.countMixingColors);
-            if (this.scene.countMixingColors === 0) {
-                this.activeDisableBtn(false);
-            }
-        });
+        this.image.on("pointerup", () => this.scene.handleButtonMixingClick());
     }
 
     /**

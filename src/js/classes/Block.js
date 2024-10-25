@@ -5,6 +5,7 @@ export class Block {
     config;
     parent;
     image;
+    text;
 
     color;
     rowIndex = 0;
@@ -18,31 +19,30 @@ export class Block {
         this.colIndex = colIndex;
         this.color = config.key;
 
-        this._createElements(config);
+        this._createElements();
         this._createEvents();
     }
 
     /**
-     * Метод создает элементы поля текущими очками за раунд
+     * Метод создает элементы класса Block
      * @private
-     * @param {{string}} config - конфиг с параметрами
      **/
-    _createElements(config) {
+    _createElements() {
         this.image = this.scene.make.image({
-            x: config.x,
-            y: config.y,
-            key: config.key,
-            depth: config.depth,
-            origin: config.origin
+            x: this.config.x,
+            y: this.config.y,
+            key: this.config.key,
+            depth: this.config.depth,
+            origin: this.config.origin
         })
         .setInteractive({cursor: "pointer"});
         this.text = this.scene.make.text({
-            x: config.x + config.offsetTextX,
-            y: config.y + config.offsetTextY,
-            depth: config.depth,
-            origin: config.origin,
-            text: config.text,
-            style: config.style,
+            x: this.config.x + this.config.offsetTextX,
+            y: this.config.y + this.config.offsetTextY,
+            depth: this.config.depth,
+            origin: this.config.origin,
+            text: this.config.text,
+            style: this.config.style,
             visible: false
         });
         [
@@ -60,12 +60,9 @@ export class Block {
      * @private
      **/
     _createEvents() {
-        this.image.on("pointerup", () => {
-            const superBonusBlock = this.parent.checkSuperBonusBlock();
-            console.log("superBonusBlock", superBonusBlock);
-            
-            this.scene.blastField.handleBlockClick(this.rowIndex, this.colIndex, this.color, this.text.visible);
-        });
+        this.image.on("pointerup", () => 
+            this.parent.handleBlockClick(this.rowIndex, this.colIndex, this.color, this.text.visible)
+        );
     }
 
     /**
@@ -73,7 +70,7 @@ export class Block {
      * @public
      **/
     setRandomColor() {
-        const UPDATED_COLOR = this.parent.config.blocksName[randomIntBetween0And4()];
+        const UPDATED_COLOR = this.scene.config.blockColors[randomIntBetween0And4()];
         this.color = UPDATED_COLOR;
         this.image.setTexture(UPDATED_COLOR);
     }
@@ -84,10 +81,11 @@ export class Block {
      * @param {number} y - координата на которую должен подняться блок
      **/
     startAnimationFallingBlock(y) {
+        const OFFSET_TEXT_Y = this.config.offsetTextY;
         this.scene.tweens.add({
             targets: [this.image, this.text],
             y: function(target, key, value, targetIndex) { 
-                return targetIndex === 0 ? y : y + 12
+                return targetIndex === 0 ? y : y + OFFSET_TEXT_Y
             },
             duration: 500,
             ease: 'Linear',
