@@ -172,7 +172,15 @@ export function config() {
 				heigth: 57,
 				offsetY: 8,
 				origin: 0,
-				initialDepth: 90
+				initialDepth: 90,
+				offsetTextX: 14,
+				offsetTextY: 12,
+				text: "S",
+				style: {
+					fontSize: "30px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+				}
 			},
 			text: {
 				text: "0",
@@ -370,7 +378,7 @@ export function config() {
 				offsetX: 300,
 				text: "ОЧКИ",
 				style: {
-					fontSize: "45px",
+					fontSize: "35px",
 					fontFamily: "Marvin",
 					color: "#ffffff",
 				},
@@ -378,15 +386,15 @@ export function config() {
 			},
 			block: {
 				x: 300,
-				y: 205,
+				y: 185,
 				origin: 0,
-				offsetY: 70,
+				offsetY: 65,
 				offsetX: 300,
 			},
 			text: {
 				x: 395,
-				y: 228,
-				offsetY: 70,
+				y: 208,
+				offsetY: 65,
 				offsetX: 300,
 				text: "",
 				style: {
@@ -398,13 +406,13 @@ export function config() {
 			},
 			blockColors: ["yellow", "purple", "blue", "green", "red"],
 			bonusesText: {
-				x: 420,
-				y: 395,
+				x: 420 + 20,
+				y: 335 + 20,
 				offsetY: 70,
 				offsetX: 300,
 				text: "БОНУСЫ",
 				style: {
-					fontSize: "45px",
+					fontSize: "40px",
 					fontFamily: "Marvin",
 					color: "#ffffff",
 				},
@@ -412,29 +420,27 @@ export function config() {
 			},
 			markerActiveBonus: {
 				x: 300,
-				y: 385 + 70,
+				y: 385 + 40,
 				key: "markerActiveBonus",
 				origin: 0,
 				scale: 1,
 			},
 			textActiveBonus: {
 				x: 335,
-				y: 378 + 70,
+				y: 378 + 40,
 				text: "- БОНУС АКТИВИРОВАН",
 				style: {
-					fontSize: "30px",
+					fontSize: "25px",
 					fontFamily: "Marvin",
 					color: "#ffffff",
 				},
 			},
 			bonusRadiusText: {
 				x: 300,
-				y: 478 + 15,
-				offsetY: 70,
-				offsetX: 300,
+				y: 465,
 				text: "R - ВЗРЫВ РАДИУСОМ",
 				style: {
-					fontSize: "30px",
+					fontSize: "25px",
 					fontFamily: "Marvin",
 					color: "#ffffff",
 				},
@@ -442,10 +448,8 @@ export function config() {
 			},
 			bonusLineText: {
 				x: 300,
-				y: 538,
-				offsetY: 70,
-				offsetX: 300,
-				text: "L - ВЗРЫВ ПО ЛИНИИ (ПОЯВЛЯЕТСЯ ПРИ ВЗРЫВЕ 10 БЛОКОВ ОДНОГО ЦВЕТА)",
+				y: 508,
+				text: "L - ВЗРЫВ ПО ЛИНИИ (ПОЯВЛЯЕТСЯ ПРИ ВЗРЫВЕ 8 БЛОКОВ ОДНОГО ЦВЕТА)",
 				style: {
 					fontSize: "25px",
 					fontFamily: "Marvin",
@@ -454,6 +458,18 @@ export function config() {
 				},
 				origin: 0
 			},
+			superBonusText: {
+				x: 300,
+				y: 608,
+				text: "S - ВЗРЫВ ВСЕГО ПОЛЯ (ПОЯВЛЯЕТСЯ ПРИ ВЗРЫВЕ 13 БЛОКОВ ОДНОГО ЦВЕТА)",
+				style: {
+					fontSize: "25px",
+					fontFamily: "Marvin",
+					color: "#ffffff",
+					wordWrap: { width: 450, useAdvancedWrap: true }
+				},
+				origin: 0
+			}
 		},
 		bonusesDescription: {
 			x: 800,

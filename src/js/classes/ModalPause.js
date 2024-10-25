@@ -41,8 +41,9 @@ export class ModalPause {
             ...config.bonusRadiusText,
             text: `${config.bonusRadiusText.text} ${this.scene.radiusBlast}`
         });
-        const bonusTeleportText = this.scene.make.text(config.bonusLineText);
+        const bonusLineText = this.scene.make.text(config.bonusLineText);
         const scoreText = this.scene.make.text(config.scoreText);
+        const superBonusText = this.scene.make.text(config.superBonusText);
 
 
         this.children = [
@@ -54,7 +55,8 @@ export class ModalPause {
             markerActiveBonus,
             textActiveBonus,
             bonusRadiusText,
-            bonusTeleportText
+            bonusLineText,
+            superBonusText
         ];
         config.blockColors.forEach((color, index) => {
             const ROW = Math.floor(index / 2);

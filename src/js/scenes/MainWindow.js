@@ -29,12 +29,10 @@ export class MainWindow extends Phaser.Scene {
 	activeBonuses = {
 		0: false,
 		1: false,
-		// 2: false,
 	};
 	counterBonuses = {
 		0: 5,
 		1: 0,
-		// 2: 0,
 	};
 	radiusBlast = 3;
 	countMixingColors = 2;

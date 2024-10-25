@@ -36,11 +36,23 @@ export class Block {
             origin: config.origin
         })
         .setInteractive({cursor: "pointer"});
+        this.text = this.scene.make.text({
+            x: config.x + config.offsetTextX,
+            y: config.y + config.offsetTextY,
+            depth: config.depth,
+            origin: config.origin,
+            text: config.text,
+            style: config.style,
+            visible: false
+        });
         [
             this.scene.cameras.main,
             this.scene.modalPauseCamera,
             this.scene.modalWinLoseCamera
-        ].forEach(camera => camera.ignore(this.image));
+        ].forEach(camera => {
+            camera.ignore(this.text);
+            camera.ignore(this.image);
+        });
     }
 
     /**
@@ -49,7 +61,10 @@ export class Block {
      **/
     _createEvents() {
         this.image.on("pointerup", () => {
-            this.scene.blastField.handleBlockClick(this.rowIndex, this.colIndex, this.color);
+            const superBonusBlock = this.parent.checkSuperBonusBlock();
+            console.log("superBonusBlock", superBonusBlock);
+            
+            this.scene.blastField.handleBlockClick(this.rowIndex, this.colIndex, this.color, this.text.visible);
         });
     }
 
@@ -70,8 +85,10 @@ export class Block {
      **/
     startAnimationFallingBlock(y) {
         this.scene.tweens.add({
-            targets: this.image,
-            y: y,
+            targets: [this.image, this.text],
+            y: function(target, key, value, targetIndex) { 
+                return targetIndex === 0 ? y : y + 12
+            },
             duration: 500,
             ease: 'Linear',
             onComplete: (tween) => {
@@ -84,4 +101,32 @@ export class Block {
         });
     }
 
+    /**
+     * Метод для обновления положения блока и текста
+     * @public
+     * @param {number} value - новая координата Y
+     **/
+    setY(value) {
+        this.text.setY(value);
+        this.image.setY(value);
+    }
+
+    /**
+     * Метод для обновления порядка отображения элемента
+     * @public
+     * @param {number} value - новая координата Y
+     **/
+    setDepth(value) {
+        this.text.setDepth(value);
+        this.image.setDepth(value);
+    }
+
+    /**
+     * Метод для обновления положения блока и текста
+     * @public
+     * @param {boolean} state - true(показать)/скрыть
+     **/
+    showHideText(state) {
+        this.text.setVisible(state);
+    }
 }

@@ -36,6 +36,11 @@ export const getElementsInLine = (row, colIndex, groupEmptyElements, arrBlocks) 
     }
 }
 
+// Поиск всех элементов на поле
+export const getAllElements = (groupEmptyElements, arrBlocks) => {
+    arrBlocks.forEach((row, rowIndex) => row.forEach((block, colIndex) => groupEmptyElements.push([rowIndex, colIndex, block.color])))
+}
+
 export const sortByColumnAndRow = (arr) => {
     return arr.sort((a, b) => {
         // Сравниваем по второму элементу (столбцу)
@@ -118,8 +123,10 @@ export const refreshBlockPositions = (array, group, allCols) => {
 // Метод для обновления положения всех блоков в общем массиве arrBlocks, после того как элементы поднялись вверх
 export const getColorCounts = (group) => {
     return group.reduce((acc, curr) => {
-        const color = curr[2];
-        acc[color] = (acc[color] || 0) + 1;
+        if (curr[2]) {
+            const color = curr[2];
+            acc[color] = (acc[color] || 0) + 1;
+        }
         return acc;
     }, {});
 };
