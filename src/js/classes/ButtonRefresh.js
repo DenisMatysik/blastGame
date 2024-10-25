@@ -8,20 +8,19 @@ export class ButtonRefresh {
         this.scene = scene;
         this.config = config;
 
-        this._createElements(config);
+        this._createElements();
         this._createEvents();
     }
 
     /**
-     * Метод создает элементы кнопки
+     * Метод создает элементы класса ButtonRefresh
      * @private
-     * @param {{string}} config - конфиг с параметрами
      **/
-    _createElements(config) {
+    _createElements() {
         this.image = this.scene.make
-            .image(config.image)
+            .image(this.config.image)
             .setInteractive({cursor: "pointer"});
-        this.text = this.scene.make.text(config.text);
+        this.text = this.scene.make.text(this.config.text);
     }
 
     /**
@@ -29,6 +28,6 @@ export class ButtonRefresh {
      * @private
      **/
     _createEvents() {
-        this.image.on("pointerup", () => this.scene.refreshGame());
+        this.image.on("pointerup", () => this.scene.handleButtonRefreshClick());
     }
 }

@@ -7,20 +7,20 @@ export class ScoreField {
 
     constructor(scene, config) {
         this.scene = scene;
+        this.config = config;
 
-        this._createElements(config);
+        this._createElements();
     }
 
     /**
-     * Метод создает элементы поля текущими очками за раунд
+     * Метод создает элементы класса ScoreField
      * @private
-     * @param {{string}} config - конфиг с параметрами
      **/
-    _createElements(config) {
-        this.scene.make.image(config.bg);
-        this.scene.make.text(config.scoreDescription);
-        this.currentScore = this.scene.make.text(config.currentScore);
-        this.allScore = this.scene.make.text(config.allScore);
+    _createElements() {
+        this.scene.make.image(this.config.bg);
+        this.scene.make.text(this.config.scoreDescription);
+        this.currentScore = this.scene.make.text(this.config.currentScore);
+        this.allScore = this.scene.make.text(this.config.allScore);
     }
 
     /**
@@ -35,7 +35,7 @@ export class ScoreField {
     }
 
     /**
-     * Метод для сброса значений полей currentScore и allScore
+     * Метод для сброса значений класса ScoreField
      * @public
      **/
     resetScoreField() {

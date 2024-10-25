@@ -12,7 +12,7 @@ export class ButtonClose {
     }
 
     /**
-     * Метод создает элементы поля текущими очками за раунд
+     * Метод создает элементы класса ButtonClose
      * @private
      * @param {{string}} config - конфиг с параметрами
      **/
@@ -22,13 +22,11 @@ export class ButtonClose {
             .setInteractive({cursor: "pointer"});
     }
 
-        /**
+    /**
      * Метод для создания событий
      * @private
      **/
     _createEvents() {
-        this.image.on("pointerup", () => {
-		    this.scene.modalPauseCamera.setVisible(false);
-        });
+        this.image.on("pointerup", () => this.scene.handleButtonCloseClick());
     }
 }

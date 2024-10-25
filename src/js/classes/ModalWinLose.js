@@ -10,9 +10,9 @@ export class ModalWinLose {
         this.scene = scene;
         this.config = config;
 
-        this._createElements(config);
-        // Отключаем отображение элементов в других камерах
-        this.children.forEach(el => {
+        this._createElements();
+        
+        this.children.forEach(el => { // Отключаем отображение элементов в других камерах
             this.scene.cameras.main.ignore(el);
             this.scene.blastFieldCamera.ignore(el);
             this.scene.modalPauseCamera.ignore(el);
@@ -20,16 +20,15 @@ export class ModalWinLose {
     }
 
     /**
-     * Метод создает элементы модального окна
+     * Метод создает элементы класса ModalWinLose
      * @private
-     * @param {{string}} config - конфиг с параметрами
      **/
-    _createElements(config) {
+    _createElements() {
         const bg = this.scene.make
-            .image(config.bg)
+            .image(this.config.bg)
             .setInteractive();
-        this.text = this.scene.make.text(config.text);
-        const btnRefresh = new ButtonRefresh(this.scene, config.btnRefresh);
+        this.text = this.scene.make.text(this.config.text);
+        const btnRefresh = new ButtonRefresh(this.scene, this.config.btnRefresh);
 
         this.children = [
             bg,
